@@ -18,12 +18,12 @@ export function DocPill({ label, present, icon: Icon }: DocPillProps) {
     >
       <Icon
         className="h-4 w-4 flex-shrink-0"
-        style={{ color: present ? "#6d28d9" : "#c8372d" }}
+        style={{ color: present ? "#138a4b" : "#c8372d" }}
       />
       <span className="text-xs font-semibold text-foreground">{label}</span>
       <span className="ml-auto">
         {present ? (
-          <Check className="h-3.5 w-3.5" style={{ color: "#6d28d9" }} />
+          <Check className="h-3.5 w-3.5" style={{ color: "#138a4b" }} />
         ) : (
           <X className="h-3.5 w-3.5" style={{ color: "#c8372d" }} />
         )}

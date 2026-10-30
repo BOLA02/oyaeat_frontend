@@ -5,11 +5,11 @@ import { Check, X, PauseCircle } from "lucide-react";
 export const statusConfig = {
   suspended: {
     icon: PauseCircle,
-    color: "#d97f06",
-    bg: "#fff4d6",
+    color: "#c94d00",
+    bg: "#fff1e4",
     label: "Suspended",
   },
-  approved: { icon: Check, color: "#6d28d9", bg: "#dcfce7", label: "Approved" },
+  approved: { icon: Check, color: "#138a4b", bg: "#dcfce7", label: "Approved" },
   rejected: { icon: X, color: "#c8372d", bg: "#FDECEA", label: "Rejected" },
 };
 

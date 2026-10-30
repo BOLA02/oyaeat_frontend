@@ -294,7 +294,7 @@ function SettleDialog({ row, onClose, onDone }: { row: CashCommissionRow; onClos
 type DialogRow = {
   name: string;
   account: { bankName: string; bankCode: string | null; accountNumber: string; active: boolean; commissionPercent?: number | null } | null;
-  submittedBank: { accountNumber: string } | null;
+  submittedBank: { accountNumber: string; bankName?: string | null } | null;
 };
 
 function AccountDialog({
@@ -315,7 +315,14 @@ function AccountDialog({
   onPaused?: () => void;
 }) {
   const existing = row.account;
-  const [bankCode, setBankCode] = useState(existing?.bankCode || "");
+  // Preselect the bank the rider submitted by matching its name against the Paystack list.
+  const submittedBankCode = (() => {
+    const n = row.submittedBank?.bankName?.trim().toLowerCase();
+    if (!n) return "";
+    const norm = (v: string) => v.toLowerCase().replace(/\b(plc|bank|limited|ltd)\b/g, "").replace(/[^a-z0-9]/g, "");
+    return banks.find((b) => b.name.toLowerCase() === n)?.code || banks.find((b) => norm(b.name) === norm(n))?.code || "";
+  })();
+  const [bankCode, setBankCode] = useState(existing?.bankCode || submittedBankCode);
   const [accountNumber, setAccountNumber] = useState(existing?.accountNumber || row.submittedBank?.accountNumber || "");
   const [commission, setCommission] = useState(existing?.commissionPercent != null ? String(existing.commissionPercent) : "");
   const [resolvedName, setResolvedName] = useState("");
@@ -326,22 +333,26 @@ function AccountDialog({
   const bankName = banks.find((b) => b.code === bankCode)?.name || existing?.bankName || "";
   const numberOk = /^\d{10}$/.test(accountNumber);
 
-  // Verify the account with the bank as soon as both fields are valid.
+  // Any change to the bank or number invalidates a previous verification.
   useEffect(() => {
     setResolvedName("");
     setErr("");
-    if (!bankCode || !numberOk) return;
-    let cancelled = false;
+  }, [bankCode, accountNumber]);
+
+  // Verification is explicit (a button), so editing the form never burns Paystack lookups.
+  const verify = async () => {
     setChecking(true);
-    paymentAccountsApi
-      .resolve(accountNumber, bankCode)
-      .then((r) => !cancelled && setResolvedName(r.accountName))
-      .catch((e) => !cancelled && setErr(e.message))
-      .finally(() => !cancelled && setChecking(false));
-    return () => {
-      cancelled = true;
-    };
-  }, [bankCode, accountNumber, numberOk]);
+    setErr("");
+    try {
+      const r = await paymentAccountsApi.resolve(accountNumber, bankCode);
+      setResolvedName(r.accountName);
+    } catch (e: any) {
+      const m = String(e?.message || "");
+      setErr(/resolve|limit|too many|429/i.test(m) ? "Paystack's lookup limit was reached. Wait a minute and press Verify again. (Test keys are limited; live keys are not.)" : m);
+    } finally {
+      setChecking(false);
+    }
+  };
 
   const commissionNum = commission.trim() === "" ? null : Number(commission);
   const commissionOk = commissionNum === null || (commissionNum >= 0 && commissionNum < 100);
@@ -400,13 +411,17 @@ function AccountDialog({
             />
           </label>
 
+          <Button type="button" variant="outline" onClick={verify} disabled={checking || !bankCode || !numberOk} className="w-full rounded-full">
+            {checking && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Verify account
+          </Button>
+
           <div className="min-h-[44px] rounded-xl bg-muted px-4 py-3 text-sm">
             {checking ? (
               <span className="flex items-center gap-2 text-muted-foreground"><Loader2 className="h-4 w-4 animate-spin" /> Verifying with the bank…</span>
             ) : resolvedName ? (
               <span className="flex items-center gap-2 font-semibold text-success"><CheckCircle2 className="h-4 w-4" /> {resolvedName}</span>
             ) : (
-              <span className="text-muted-foreground">The account name appears here once the bank confirms it. Check it matches the business.</span>
+              <span className="text-muted-foreground">Press Verify to see the account name from the bank. Check it matches the person or business.</span>
             )}
           </div>
 

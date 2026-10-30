@@ -47,7 +47,7 @@ export function MessageItem({
   let bubbleClasses =
     "bg-white border border-gray-100 text-gray-800 rounded-tl-none";
   if (isMe) {
-    bubbleClasses = "bg-[#5b21b6] text-white rounded-tr-none";
+    bubbleClasses = "bg-[#066432] text-white rounded-tr-none";
   } else if (isAdminSender) {
     bubbleClasses =
       "bg-slate-900 text-slate-50 border border-slate-950 rounded-tl-none ring-1 ring-slate-950/10 shadow-md";
@@ -97,7 +97,7 @@ export function MessageItem({
         {/* Metadata breadcrumb history path label summary row */}
         <span className="text-[10px] text-gray-400 font-extrabold mt-1.5 px-1 opacity-80 group-hover:opacity-100 transition-opacity uppercase tracking-wider flex flex-wrap items-center gap-1">
           <span
-            className={`${isAdminSender ? "text-slate-900 font-black underline decoration-mango-400 decoration-2" : "text-[#5b21b6] font-black"}`}
+            className={`${isAdminSender ? "text-slate-900 font-black underline decoration-mango-400 decoration-2" : "text-[#066432] font-black"}`}
           >
             {senderName}
           </span>

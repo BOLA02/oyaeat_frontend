@@ -9,15 +9,15 @@ import Image from "next/image";
 
 // ── Brand tokens ──────────────────────────────────────────────────────────────
 const C = {
-  brand: "#3b0f7a",
-  brandMid: "#6d28d9",
-  brandLight: "#8b5cf6",
-  mango: "#d97f06",
-  bg: "#fffbef",
+  brand: "#03381c",
+  brandMid: "#138a4b",
+  brandLight: "#26925a",
+  mango: "#c94d00",
+  bg: "#fff7f0",
   white: "#FFFFFF",
   textDark: "inherit",
-  textMuted: "#6b6480",
-  border: "#e6e0f3",
+  textMuted: "#5f7066",
+  border: "#e2eae4",
   error: "#c8372d",
 };
 
@@ -57,7 +57,7 @@ function IllustrationPanel() {
 
       {/* Brand mark */}
       <div className="relative z-10">
-        <Logo variant="white" className="h-20 w-auto" />
+        <Logo variant="white" layout="stacked" className="h-32 w-auto" />
         <p
           className="mt-1 text-xs font-bold tracking-[0.2em] text-white/90 drop-shadow"
         >

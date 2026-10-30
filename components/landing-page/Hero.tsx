@@ -89,7 +89,7 @@ const Hero = () => {
             onSubmit={onSubmit}
             className="mt-8 flex flex-col sm:flex-row gap-3 max-w-xl"
           >
-            <label className="flex-1 min-w-0 flex items-center gap-3 bg-[var(--lp-cream-50)] rounded-full px-5 border-2 border-transparent focus-within:border-[var(--lp-mango)] shadow-[0_6px_0_rgba(26,16,51,0.25)] transition-colors">
+            <label className="flex-1 min-w-0 flex items-center gap-3 bg-[var(--lp-cream-50)] rounded-full px-5 border-2 border-transparent focus-within:border-[var(--lp-mango)] shadow-[0_6px_0_rgba(11,42,26,0.25)] transition-colors">
               <MapPin
                 className="w-5 h-5 text-[var(--lp-violet-700)] flex-shrink-0"
                 aria-hidden="true"
@@ -105,7 +105,7 @@ const Hero = () => {
             </label>
             <button
               type="submit"
-              className="group inline-flex items-center justify-center gap-2 bg-[var(--lp-mango)] text-[var(--lp-violet-950)] font-extrabold text-base rounded-full px-7 py-4 shadow-[0_6px_0_#c98a06] hover:-translate-y-0.5 active:translate-y-1 active:shadow-[0_2px_0_#c98a06] transition-all whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              className="group inline-flex items-center justify-center gap-2 bg-[var(--lp-mango)] text-[var(--lp-violet-950)] font-extrabold text-base rounded-full px-7 py-4 shadow-[0_6px_0_#c94d00] hover:-translate-y-0.5 active:translate-y-1 active:shadow-[0_2px_0_#c94d00] transition-all whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
               Find food
               <ArrowRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
@@ -136,7 +136,7 @@ const Hero = () => {
               className={`absolute ${d.pos} ${d.size} aspect-square lp-float`}
               style={{ animationDelay: d.delay, zIndex: i === 3 ? 3 : 2 }}
             >
-              <div className="relative w-full h-full rounded-full overflow-hidden border-[6px] sm:border-[8px] border-[var(--lp-cream)] bg-[var(--lp-cream)] shadow-[0_14px_30px_rgba(26,16,51,0.35)]">
+              <div className="relative w-full h-full rounded-full overflow-hidden border-[6px] sm:border-[8px] border-[var(--lp-cream)] bg-[var(--lp-cream)] shadow-[0_14px_30px_rgba(11,42,26,0.35)]">
                 <Image
                   src={d.src}
                   alt={d.alt}
@@ -150,10 +150,10 @@ const Hero = () => {
           ))}
 
           {/* Pills */}
-          <div className="absolute right-[2%] top-[14%] z-10 rounded-xl bg-[var(--lp-cream)] text-[var(--lp-ink)] font-extrabold text-sm sm:text-base px-4 py-2 shadow-[0_5px_0_rgba(26,16,51,0.3)] rotate-[3deg]">
+          <div className="absolute right-[2%] top-[14%] z-10 rounded-xl bg-[var(--lp-cream)] text-[var(--lp-ink)] font-extrabold text-sm sm:text-base px-4 py-2 shadow-[0_5px_0_rgba(11,42,26,0.3)] rotate-[3deg]">
             Order now
           </div>
-          <div className="absolute left-[-2%] bottom-[22%] z-10 flex items-center gap-1.5 rounded-xl bg-[var(--lp-cream)] text-[var(--lp-ink)] font-extrabold text-xs sm:text-sm px-3.5 py-2 shadow-[0_5px_0_rgba(26,16,51,0.3)] -rotate-[3deg]">
+          <div className="absolute left-[-2%] bottom-[22%] z-10 flex items-center gap-1.5 rounded-xl bg-[var(--lp-cream)] text-[var(--lp-ink)] font-extrabold text-xs sm:text-sm px-3.5 py-2 shadow-[0_5px_0_rgba(11,42,26,0.3)] -rotate-[3deg]">
             <BadgeCheck className="w-4 h-4 text-[var(--lp-violet-700)]" />
             Fast delivery
           </div>

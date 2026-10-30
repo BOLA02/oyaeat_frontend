@@ -68,7 +68,7 @@ export default function NotificationsPage() {
   if (loading) {
     return (
       <div className="w-full h-full min-h-[400px] flex items-center justify-center gap-2">
-        <Loader2 className="w-5 h-5 animate-spin text-[#6d28d9]" />
+        <Loader2 className="w-5 h-5 animate-spin text-[#138a4b]" />
         <span className="text-xs font-bold text-slate-500">
           Synchronizing notification arrays...
         </span>
@@ -88,7 +88,7 @@ export default function NotificationsPage() {
         {notifications.some((n) => !n.read) && (
           <button
             onClick={handleMarkAllRead}
-            className="bg-white border border-[#e6e0f3] px-4 py-2 rounded-xl text-sm font-bold text-[#6d28d9] shadow-sm flex items-center gap-2 hover:bg-[#f5f3ff] transition-colors cursor-pointer"
+            className="bg-white border border-[#e2eae4] px-4 py-2 rounded-xl text-sm font-bold text-[#138a4b] shadow-sm flex items-center gap-2 hover:bg-[#f3f9f5] transition-colors cursor-pointer"
           >
             <CheckCircle2 className="w-4 h-4" /> Mark all read
           </button>
@@ -100,24 +100,24 @@ export default function NotificationsPage() {
         {notifications.map((n) => (
           <div
             key={n.id}
-            className={`border border-[#e6e0f3] bg-white rounded-2xl p-5 shadow-sm flex gap-4 transition-all ${
-              n.read ? "opacity-60" : "border-l-4 border-l-[#6d28d9]"
+            className={`border border-[#e2eae4] bg-white rounded-2xl p-5 shadow-sm flex gap-4 transition-all ${
+              n.read ? "opacity-60" : "border-l-4 border-l-[#138a4b]"
             }`}
           >
             <div
               className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 ${
                 n.read
                   ? "bg-slate-100 text-slate-400"
-                  : "bg-[#f1ebff] text-[#6d28d9]"
+                  : "bg-[#e6f2ea] text-[#138a4b]"
               }`}
             >
               <Bell className="w-6 h-6" />
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="font-extrabold text-[#1a1033] text-base sm:text-lg truncate">
+              <h3 className="font-extrabold text-[#10231a] text-base sm:text-lg truncate">
                 {n.title}
               </h3>
-              <p className="font-medium text-[#6b6480] mt-1 text-xs sm:text-sm leading-relaxed">
+              <p className="font-medium text-[#5f7066] mt-1 text-xs sm:text-sm leading-relaxed">
                 {n.text}
               </p>
               <span className="text-[10px] font-bold text-slate-400 mt-3 inline-block uppercase tracking-wider">

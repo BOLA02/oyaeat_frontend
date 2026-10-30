@@ -259,7 +259,7 @@ export default function BusinessesPage() {
       key: "suspended",
       label: "Suspended",
       icon: PauseCircle,
-      accent: "#6b6480",
+      accent: "#5f7066",
       value: counts.suspended,
     },
   ];

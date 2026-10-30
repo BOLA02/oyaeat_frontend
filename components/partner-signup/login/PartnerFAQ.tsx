@@ -14,7 +14,7 @@ export default function PartnerFAQ({ data }: { data: FAQItem[] }) {
         {data.map((faq, i) => {
           const isOpen = open === i;
           return (
-            <div key={i} className="overflow-hidden rounded-2xl border border-[#ecdcae] bg-white">
+            <div key={i} className="overflow-hidden rounded-2xl border border-[#f0d5bd] bg-white">
               <button
                 onClick={() => setOpen(isOpen ? null : i)}
                 aria-expanded={isOpen}

@@ -68,7 +68,7 @@ const LetsDoItTogether = () => {
                         className="object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     </span>
-                    <span className="absolute -bottom-1 -right-1 w-11 h-11 rounded-full bg-[var(--lp-mango)] text-[var(--lp-violet-950)] flex items-center justify-center shadow-[0_3px_0_#c98a06]">
+                    <span className="absolute -bottom-1 -right-1 w-11 h-11 rounded-full bg-[var(--lp-mango)] text-[var(--lp-violet-950)] flex items-center justify-center shadow-[0_3px_0_#c94d00]">
                       <Icon className="w-5 h-5" />
                     </span>
                   </span>

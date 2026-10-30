@@ -6,16 +6,16 @@ import { Search, Star, RefreshCw, XCircle, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const C = {
-  brand: "#3b0f7a",
-  brandMid: "#6d28d9",
-  brandLight: "#8b5cf6",
-  bg: "#f5f3ff",
+  brand: "#03381c",
+  brandMid: "#138a4b",
+  brandLight: "#26925a",
+  bg: "#f3f9f5",
   white: "#FFFFFF",
   textDark: "#111827",
-  textMuted: "#6b6480",
-  border: "#ddd6fe",
+  textMuted: "#5f7066",
+  border: "#c7e3d1",
   error: "#c8372d",
-  mango: "#d97f06",
+  mango: "#c94d00",
 };
 
 export default function ReviewsPage() {
@@ -231,7 +231,7 @@ export default function ReviewsPage() {
               </h3>
             </div>
 
-            <div className="divide-y divide-[#f1ebff] flex-1">
+            <div className="divide-y divide-[#e6f2ea] flex-1">
               {data.reviews.map((review) => (
                 <div key={review.id} className="p-6">
                   <div className="flex justify-between items-start mb-2">
@@ -253,7 +253,7 @@ export default function ReviewsPage() {
                       </div>
                     </div>
                     {review.orderId && (
-                      <span className="text-xs font-bold uppercase tracking-widest px-2 py-1 rounded bg-[#f5f3ff] text-[#6d28d9]">
+                      <span className="text-xs font-bold uppercase tracking-widest px-2 py-1 rounded bg-[#f3f9f5] text-[#138a4b]">
                         Order #{review.orderId}
                       </span>
                     )}

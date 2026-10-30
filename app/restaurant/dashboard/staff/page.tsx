@@ -9,9 +9,9 @@ const inputStyle: React.CSSProperties = {
   width: "100%",
   padding: "0.625rem 1rem",
   backgroundColor: "#ffffff",
-  border: "1px solid #ddd6fe",
+  border: "1px solid #c7e3d1",
   borderRadius: "0.5rem",
-  color: "#5b21b6",
+  color: "#066432",
   fontSize: "0.875rem",
   outline: "none",
 };
@@ -22,7 +22,7 @@ const labelStyle: React.CSSProperties = {
   fontWeight: 600,
   textTransform: "uppercase" as const,
   letterSpacing: "0.05em",
-  color: "#7c3aed",
+  color: "#138a4b",
   marginBottom: "0.375rem",
 };
 
@@ -62,10 +62,10 @@ function StaffFormModal({ open, mode, initial, onClose, onSaved }: ModalProps) {
 
   const focusGreen = (
     e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => (e.currentTarget.style.borderColor = "#6d28d9");
+  ) => (e.currentTarget.style.borderColor = "#138a4b");
   const blurGreen = (
     e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => (e.currentTarget.style.borderColor = "#ddd6fe");
+  ) => (e.currentTarget.style.borderColor = "#c7e3d1");
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -102,17 +102,17 @@ function StaffFormModal({ open, mode, initial, onClose, onSaved }: ModalProps) {
     >
       <div
         className="w-full max-w-md rounded-2xl shadow-xl overflow-hidden"
-        style={{ backgroundColor: "#ffffff", border: "1px solid #ddd6fe" }}
+        style={{ backgroundColor: "#ffffff", border: "1px solid #c7e3d1" }}
       >
         {/* Header */}
         <div
           className="px-6 py-5 border-b"
-          style={{ backgroundColor: "#fbf9ff", borderColor: "#f1ebff" }}
+          style={{ backgroundColor: "#f6f8f5", borderColor: "#e6f2ea" }}
         >
-          <h2 className="text-lg font-bold" style={{ color: "#5b21b6" }}>
+          <h2 className="text-lg font-bold" style={{ color: "#066432" }}>
             {mode === "edit" ? "Edit Staff Member" : "Add Staff Member"}
           </h2>
-          <p className="text-xs mt-0.5" style={{ color: "#7c3aed" }}>
+          <p className="text-xs mt-0.5" style={{ color: "#138a4b" }}>
             {mode === "edit"
               ? "Update staff details below"
               : "Fill in the details to add a new staff member"}
@@ -163,7 +163,7 @@ function StaffFormModal({ open, mode, initial, onClose, onSaved }: ModalProps) {
                 Email{" "}
                 <span
                   style={{
-                    color: "#c4b5fd",
+                    color: "#97ccab",
                     textTransform: "none",
                     fontWeight: 400,
                   }}
@@ -189,7 +189,7 @@ function StaffFormModal({ open, mode, initial, onClose, onSaved }: ModalProps) {
                 Phone{" "}
                 <span
                   style={{
-                    color: "#c4b5fd",
+                    color: "#97ccab",
                     textTransform: "none",
                     fontWeight: 400,
                   }}
@@ -238,11 +238,11 @@ function StaffFormModal({ open, mode, initial, onClose, onSaved }: ModalProps) {
               className="flex-1 py-2.5 rounded-lg text-sm font-semibold border transition-colors"
               style={{
                 backgroundColor: "#ffffff",
-                color: "#5b21b6",
-                borderColor: "#ddd6fe",
+                color: "#066432",
+                borderColor: "#c7e3d1",
               }}
               onMouseOver={(e) =>
-                (e.currentTarget.style.backgroundColor = "#fbf9ff")
+                (e.currentTarget.style.backgroundColor = "#f6f8f5")
               }
               onMouseOut={(e) =>
                 (e.currentTarget.style.backgroundColor = "#ffffff")
@@ -255,16 +255,16 @@ function StaffFormModal({ open, mode, initial, onClose, onSaved }: ModalProps) {
               disabled={submitting}
               className="flex-1 py-2.5 rounded-lg text-sm font-semibold text-white transition-colors"
               style={{
-                backgroundColor: submitting ? "#7c3aed" : "#5b21b6",
+                backgroundColor: submitting ? "#138a4b" : "#066432",
                 cursor: submitting ? "not-allowed" : "pointer",
               }}
               onMouseOver={(e) => {
                 if (!submitting)
-                  e.currentTarget.style.backgroundColor = "#3b0f7a";
+                  e.currentTarget.style.backgroundColor = "#03381c";
               }}
               onMouseOut={(e) => {
                 if (!submitting)
-                  e.currentTarget.style.backgroundColor = "#5b21b6";
+                  e.currentTarget.style.backgroundColor = "#066432";
               }}
             >
               {submitting ? "Saving…" : "Save"}
@@ -337,7 +337,7 @@ export default function StaffPage() {
           <h1 className="font-display text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
             Staff Management
           </h1>
-          <p className="mt-1 text-sm" style={{ color: "#7c3aed" }}>
+          <p className="mt-1 text-sm" style={{ color: "#138a4b" }}>
             Manage your kitchen and delivery staff.
           </p>
         </div>
@@ -347,9 +347,9 @@ export default function StaffPage() {
           <div
             className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg border text-sm font-medium"
             style={{
-              backgroundColor: "#f1ebff",
-              borderColor: "#c4b5fd",
-              color: "#6d28d9",
+              backgroundColor: "#e6f2ea",
+              borderColor: "#97ccab",
+              color: "#138a4b",
             }}
           >
             <Users className="w-4 h-4" />
@@ -361,12 +361,12 @@ export default function StaffPage() {
               setModalOpen(true);
             }}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white transition-colors"
-            style={{ backgroundColor: "#5b21b6" }}
+            style={{ backgroundColor: "#066432" }}
             onMouseOver={(e) =>
-              (e.currentTarget.style.backgroundColor = "#3b0f7a")
+              (e.currentTarget.style.backgroundColor = "#03381c")
             }
             onMouseOut={(e) =>
-              (e.currentTarget.style.backgroundColor = "#5b21b6")
+              (e.currentTarget.style.backgroundColor = "#066432")
             }
           >
             <Plus className="w-4 h-4" />
@@ -383,19 +383,19 @@ export default function StaffPage() {
 
       {/* Staff cards */}
       {loading ? (
-        <p className="text-sm" style={{ color: "#7c3aed" }}>
+        <p className="text-sm" style={{ color: "#138a4b" }}>
           Loading staff…
         </p>
       ) : staff.length === 0 ? (
-        <div className="bg-card border border-[#ddd6fe] rounded-xl p-10 text-center">
+        <div className="bg-card border border-[#c7e3d1] rounded-xl p-10 text-center">
           <Users
             className="w-10 h-10 mx-auto mb-3"
-            style={{ color: "#c4b5fd" }}
+            style={{ color: "#97ccab" }}
           />
-          <p className="font-semibold" style={{ color: "#5b21b6" }}>
+          <p className="font-semibold" style={{ color: "#066432" }}>
             No staff members yet
           </p>
-          <p className="text-sm mt-1" style={{ color: "#7c3aed" }}>
+          <p className="text-sm mt-1" style={{ color: "#138a4b" }}>
             Click "Add Staff" to get started.
           </p>
         </div>
@@ -407,12 +407,12 @@ export default function StaffPage() {
               <div
                 key={member.id}
                 className="bg-card rounded-xl border shadow-sm flex flex-col transition-colors"
-                style={{ borderColor: "#ddd6fe" }}
+                style={{ borderColor: "#c7e3d1" }}
                 onMouseOver={(e) =>
-                  (e.currentTarget.style.borderColor = "#6d28d9")
+                  (e.currentTarget.style.borderColor = "#138a4b")
                 }
                 onMouseOut={(e) =>
-                  (e.currentTarget.style.borderColor = "#ddd6fe")
+                  (e.currentTarget.style.borderColor = "#c7e3d1")
                 }
               >
                 {/* Card header */}
@@ -420,7 +420,7 @@ export default function StaffPage() {
                   {/* Avatar */}
                   <div
                     className="w-11 h-11 rounded-full flex items-center justify-center font-bold text-white text-sm flex-shrink-0"
-                    style={{ backgroundColor: "#5b21b6" }}
+                    style={{ backgroundColor: "#066432" }}
                   >
                     {initials(member.fullName)}
                   </div>
@@ -429,13 +429,13 @@ export default function StaffPage() {
                       <div className="min-w-0">
                         <p
                           className="font-bold text-sm truncate"
-                          style={{ color: "#5b21b6" }}
+                          style={{ color: "#066432" }}
                         >
                           {member.fullName}
                         </p>
                         <p
                           className="text-xs mt-0.5"
-                          style={{ color: "#7c3aed" }}
+                          style={{ color: "#138a4b" }}
                         >
                           {member.role}
                         </p>
@@ -445,9 +445,9 @@ export default function StaffPage() {
                         style={
                           isActive
                             ? {
-                                backgroundColor: "#f1ebff",
-                                color: "#6d28d9",
-                                borderColor: "#c4b5fd",
+                                backgroundColor: "#e6f2ea",
+                                color: "#138a4b",
+                                borderColor: "#97ccab",
                               }
                             : {
                                 backgroundColor: "#f5f5f5",
@@ -465,24 +465,24 @@ export default function StaffPage() {
                 {/* Contact info */}
                 <div
                   className="px-5 pb-4 space-y-1.5 border-t border-b"
-                  style={{ borderColor: "#f1ebff" }}
+                  style={{ borderColor: "#e6f2ea" }}
                 >
                   <div className="pt-3" />
                   {member.email ? (
                     <div
                       className="flex items-center gap-2 text-xs"
-                      style={{ color: "#7c3aed" }}
+                      style={{ color: "#138a4b" }}
                     >
                       <Mail
                         className="w-3.5 h-3.5 flex-shrink-0"
-                        style={{ color: "#6d28d9" }}
+                        style={{ color: "#138a4b" }}
                       />
                       <span className="truncate">{member.email}</span>
                     </div>
                   ) : (
                     <div
                       className="flex items-center gap-2 text-xs"
-                      style={{ color: "#c4b5fd" }}
+                      style={{ color: "#97ccab" }}
                     >
                       <Mail className="w-3.5 h-3.5 flex-shrink-0" />
                       <span>No email</span>
@@ -491,18 +491,18 @@ export default function StaffPage() {
                   {member.phone ? (
                     <div
                       className="flex items-center gap-2 text-xs"
-                      style={{ color: "#7c3aed" }}
+                      style={{ color: "#138a4b" }}
                     >
                       <Phone
                         className="w-3.5 h-3.5 flex-shrink-0"
-                        style={{ color: "#6d28d9" }}
+                        style={{ color: "#138a4b" }}
                       />
                       <span>{member.phone}</span>
                     </div>
                   ) : (
                     <div
                       className="flex items-center gap-2 text-xs"
-                      style={{ color: "#c4b5fd" }}
+                      style={{ color: "#97ccab" }}
                     >
                       <Phone className="w-3.5 h-3.5 flex-shrink-0" />
                       <span>No phone</span>
@@ -521,11 +521,11 @@ export default function StaffPage() {
                     className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-semibold border transition-colors"
                     style={{
                       backgroundColor: "#ffffff",
-                      color: "#5b21b6",
-                      borderColor: "#ddd6fe",
+                      color: "#066432",
+                      borderColor: "#c7e3d1",
                     }}
                     onMouseOver={(e) =>
-                      (e.currentTarget.style.backgroundColor = "#f1ebff")
+                      (e.currentTarget.style.backgroundColor = "#e6f2ea")
                     }
                     onMouseOut={(e) =>
                       (e.currentTarget.style.backgroundColor = "#ffffff")

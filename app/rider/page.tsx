@@ -54,7 +54,7 @@ export default function RiderLanding() {
         <h2 className="lp-display text-3xl font-extrabold tracking-tight text-[var(--lp-ink)] sm:text-4xl">Why ride with us</h2>
         <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {PERKS.map(({ icon: Icon, title, body }) => (
-            <li key={title} className="rounded-3xl border border-[#ecdcae] bg-white p-6 shadow-sm">
+            <li key={title} className="rounded-3xl border border-[#f0d5bd] bg-white p-6 shadow-sm">
               <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[var(--lp-violet-100)] text-[var(--lp-violet-700)]"><Icon className="h-6 w-6" /></span>
               <h3 className="lp-display mt-4 text-xl font-bold text-[var(--lp-ink)]">{title}</h3>
               <p className="mt-1 text-[var(--lp-ink-soft)]">{body}</p>
@@ -80,7 +80,7 @@ export default function RiderLanding() {
         <h2 className="lp-display text-3xl font-extrabold tracking-tight text-[var(--lp-ink)] sm:text-4xl">Questions, answered</h2>
         <div className="mt-8 space-y-3">
           {FAQ.map(([q, a]) => (
-            <details key={q} className="group overflow-hidden rounded-2xl border border-[#ecdcae] bg-white">
+            <details key={q} className="group overflow-hidden rounded-2xl border border-[#f0d5bd] bg-white">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-base font-bold text-[var(--lp-ink)]">
                 {q}
                 <span className="text-xl text-[var(--lp-violet-700)] transition group-open:rotate-45" aria-hidden>+</span>

@@ -32,11 +32,11 @@ export default function HowItWorks() {
           {steps.map(({ icon: Icon, title, body }, i) => (
             <li
               key={title}
-              className="relative bg-[var(--lp-cream-50)] rounded-3xl p-7 pt-10 shadow-[0_8px_0_rgba(26,16,51,0.25)]"
+              className="relative bg-[var(--lp-cream-50)] rounded-3xl p-7 pt-10 shadow-[0_8px_0_rgba(11,42,26,0.25)]"
             >
               <span
                 aria-hidden="true"
-                className="lp-display absolute -top-5 left-7 w-11 h-11 rounded-full bg-[var(--lp-mango)] text-[var(--lp-violet-950)] text-2xl font-extrabold flex items-center justify-center shadow-[0_3px_0_#c98a06]"
+                className="lp-display absolute -top-5 left-7 w-11 h-11 rounded-full bg-[var(--lp-mango)] text-[var(--lp-violet-950)] text-2xl font-extrabold flex items-center justify-center shadow-[0_3px_0_#c94d00]"
               >
                 {i + 1}
               </span>

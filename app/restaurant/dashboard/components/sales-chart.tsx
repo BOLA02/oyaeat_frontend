@@ -51,15 +51,15 @@ export default function SalesChart({ data }: { data: SalesSeries[] }) {
         <AreaChart data={rows} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
           <defs>
             <linearGradient id="rev" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#7c3aed" stopOpacity={0.35} />
-              <stop offset="100%" stopColor="#7c3aed" stopOpacity={0} />
+              <stop offset="0%" stopColor="#138a4b" stopOpacity={0.35} />
+              <stop offset="100%" stopColor="#138a4b" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <CartesianGrid vertical={false} stroke="#e6e0f3" strokeDasharray="3 3" />
-          <XAxis dataKey="day" tickLine={false} axisLine={false} tick={{ fill: "#6b6480", fontSize: 12 }} interval="preserveStartEnd" />
-          <YAxis tickLine={false} axisLine={false} tick={{ fill: "#6b6480", fontSize: 12 }} tickFormatter={compact} width={44} />
-          <Tooltip content={<Tip />} cursor={{ stroke: "#c4b5fd" }} />
-          <Area type="monotone" dataKey="revenue" stroke="#5b21b6" strokeWidth={2.5} fill="url(#rev)" activeDot={{ r: 5, fill: "#fdba2d", stroke: "#5b21b6", strokeWidth: 2 }} />
+          <CartesianGrid vertical={false} stroke="#e2eae4" strokeDasharray="3 3" />
+          <XAxis dataKey="day" tickLine={false} axisLine={false} tick={{ fill: "#5f7066", fontSize: 12 }} interval="preserveStartEnd" />
+          <YAxis tickLine={false} axisLine={false} tick={{ fill: "#5f7066", fontSize: 12 }} tickFormatter={compact} width={44} />
+          <Tooltip content={<Tip />} cursor={{ stroke: "#97ccab" }} />
+          <Area type="monotone" dataKey="revenue" stroke="#066432" strokeWidth={2.5} fill="url(#rev)" activeDot={{ r: 5, fill: "#fc6504", stroke: "#066432", strokeWidth: 2 }} />
         </AreaChart>
       </ResponsiveContainer>
     </div>

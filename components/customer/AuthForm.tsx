@@ -148,7 +148,7 @@ export default function AuthScreen({ mode }: { mode: Mode }) {
           <ArrowLeft className="h-4 w-4" /> Back to restaurants
         </Link>
         <div className="max-w-md">
-          <Logo variant="white" className="h-28 w-auto" />
+          <Logo variant="white" layout="stacked" className="h-40 w-auto" />
           <h2 className="font-display mt-6 text-4xl font-extrabold leading-tight">
             {signup ? "Your next favourite meal is a few taps away." : "Good food, delivered hot."}
           </h2>

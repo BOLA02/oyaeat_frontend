@@ -23,7 +23,7 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import { AlertCircle } from "lucide-react";
 
-const COLORS = ["#5b21b6", "#6d28d9", "#4ade80", "#c4b5fd", "#3b0f7a"];
+const COLORS = ["#066432", "#138a4b", "#4ade80", "#97ccab", "#03381c"];
 
 export default function AnalyticsPage() {
   const [loading, setLoading] = useState(true);
@@ -136,14 +136,14 @@ export default function AnalyticsPage() {
         <h1 className="font-display text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
           Analytics & Reports
         </h1>
-        <p className="text-[#6b6480]">
+        <p className="text-[#5f7066]">
           Real-time synchronization of your sales metrics.
         </p>
       </div>
 
       {/* Sales Chart */}
-      <div className="bg-card border border-[#e6e0f3] rounded-2xl p-6 shadow-sm">
-        <h3 className="font-extrabold text-[#1a1033] text-lg mb-6">
+      <div className="bg-card border border-[#e2eae4] rounded-2xl p-6 shadow-sm">
+        <h3 className="font-extrabold text-[#10231a] text-lg mb-6">
           Revenue & Order Volume
         </h3>
         <div style={{ width: "100%", height: 300 }}>
@@ -152,19 +152,19 @@ export default function AnalyticsPage() {
               <BarChart data={chartData}>
                 <CartesianGrid
                   strokeDasharray="3 3"
-                  stroke="#f1ebff"
+                  stroke="#e6f2ea"
                   vertical={false}
                 />
                 <XAxis
                   dataKey="date"
-                  stroke="#6b6480"
+                  stroke="#5f7066"
                   fontSize={12}
                   tickLine={false}
                   axisLine={false}
                 />
                 <YAxis
                   yAxisId="left"
-                  stroke="#6b6480"
+                  stroke="#5f7066"
                   fontSize={12}
                   tickLine={false}
                   axisLine={false}
@@ -173,14 +173,14 @@ export default function AnalyticsPage() {
                 <YAxis
                   yAxisId="right"
                   orientation="right"
-                  stroke="#6b6480"
+                  stroke="#5f7066"
                   fontSize={12}
                   tickLine={false}
                   axisLine={false}
                 />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "#1a1033",
+                    backgroundColor: "#10231a",
                     color: "#fff",
                     borderRadius: "12px",
                     border: "none",
@@ -192,21 +192,21 @@ export default function AnalyticsPage() {
                   yAxisId="left"
                   dataKey="sales"
                   name="Revenue"
-                  fill="#5b21b6"
+                  fill="#066432"
                   radius={[4, 4, 0, 0]}
                 />
                 <Bar
                   yAxisId="right"
                   dataKey="orders"
                   name="Orders"
-                  fill="#c4b5fd"
+                  fill="#97ccab"
                   radius={[4, 4, 0, 0]}
                 />
               </BarChart>
             </ResponsiveContainer>
           ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center text-[#6b6480]">
-              <BarChart className="w-8 h-8 opacity-20 mb-3 text-[#5b21b6]" />
+            <div className="w-full h-full flex flex-col items-center justify-center text-[#5f7066]">
+              <BarChart className="w-8 h-8 opacity-20 mb-3 text-[#066432]" />
               <span className="font-semibold text-sm">
                 No recent sales data to display.
               </span>
@@ -217,8 +217,8 @@ export default function AnalyticsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Category Pie */}
-        <div className="bg-card border border-[#e6e0f3] rounded-2xl p-6 shadow-sm">
-          <h3 className="font-extrabold text-[#1a1033] text-lg mb-6">
+        <div className="bg-card border border-[#e2eae4] rounded-2xl p-6 shadow-sm">
+          <h3 className="font-extrabold text-[#10231a] text-lg mb-6">
             Revenue by Category
           </h3>
           <div style={{ width: "100%", height: 250 }}>
@@ -255,7 +255,7 @@ export default function AnalyticsPage() {
                 </PieChart>
               </ResponsiveContainer>
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-[#6b6480] font-semibold text-sm">
+              <div className="w-full h-full flex items-center justify-center text-[#5f7066] font-semibold text-sm">
                 Not enough categorised sales data.
               </div>
             )}
@@ -263,8 +263,8 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Top Items */}
-        <div className="bg-card border border-[#e6e0f3] rounded-2xl p-6 shadow-sm">
-          <h3 className="font-extrabold text-[#1a1033] text-lg mb-6">
+        <div className="bg-card border border-[#e2eae4] rounded-2xl p-6 shadow-sm">
+          <h3 className="font-extrabold text-[#10231a] text-lg mb-6">
             Top Selling Items
           </h3>
           <div className="space-y-5">
@@ -272,29 +272,29 @@ export default function AnalyticsPage() {
               topItems.map((item, idx) => (
                 <div key={idx} className="flex items-center gap-4">
                   <div className="flex-1 min-w-0">
-                    <p className="font-bold text-[#1a1033] text-sm truncate">
+                    <p className="font-bold text-[#10231a] text-sm truncate">
                       {item.name}
                     </p>
-                    <p className="text-xs font-semibold text-[#6b6480] mt-0.5">
+                    <p className="text-xs font-semibold text-[#5f7066] mt-0.5">
                       {item.sold} units sold
                     </p>
                   </div>
-                  <div className="w-16 h-1.5 bg-[#f1ebff] rounded-full overflow-hidden flex-shrink-0">
+                  <div className="w-16 h-1.5 bg-[#e6f2ea] rounded-full overflow-hidden flex-shrink-0">
                     <div
                       className="h-1.5 rounded-full"
                       style={{
                         width: `${Math.max(5, (item.sold / maxSold) * 100)}%`,
-                        backgroundColor: "#5b21b6",
+                        backgroundColor: "#066432",
                       }}
                     />
                   </div>
-                  <p className="font-black text-[#5b21b6] text-sm min-w-[70px] text-right">
+                  <p className="font-black text-[#066432] text-sm min-w-[70px] text-right">
                     ₦{(item.revenue || 0).toLocaleString()}
                   </p>
                 </div>
               ))
             ) : (
-              <div className="py-12 flex h-full items-center justify-center text-[#6b6480] font-semibold text-sm">
+              <div className="py-12 flex h-full items-center justify-center text-[#5f7066] font-semibold text-sm">
                 No item sales tracked yet.
               </div>
             )}

@@ -18,7 +18,7 @@ export default function PartnerSolutions() {
       </div>
       <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {WHO.map(({ icon: Icon, title, body }) => (
-          <li key={title} className="rounded-3xl border border-[#ecdcae] bg-white p-6 shadow-sm">
+          <li key={title} className="rounded-3xl border border-[#f0d5bd] bg-white p-6 shadow-sm">
             <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[var(--lp-violet-100)] text-[var(--lp-violet-700)]"><Icon className="h-6 w-6" /></span>
             <h3 className="lp-display mt-4 text-xl font-bold text-[var(--lp-ink)]">{title}</h3>
             <p className="mt-1 text-[var(--lp-ink-soft)]">{body}</p>

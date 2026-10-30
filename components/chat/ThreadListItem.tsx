@@ -83,7 +83,7 @@ export function ThreadListItem({
         disabled={loadingAction}
         className={`w-full text-left p-3 rounded-xl transition-all border block relative ${
           isActive
-            ? "bg-white border-[#5b21b6]/20 shadow-sm ring-1 ring-[#5b21b6]/20"
+            ? "bg-white border-[#066432]/20 shadow-sm ring-1 ring-[#066432]/20"
             : "bg-transparent border-transparent hover:bg-gray-100"
         } ${isClosed ? "opacity-65" : ""}`}
       >
@@ -128,7 +128,7 @@ export function ThreadListItem({
             </span>
 
             {hasUnread && (
-              <span className="bg-[#5b21b6] text-white text-[9px] font-black h-4 min-w-4 px-1 rounded-full flex items-center justify-center animate-pulse shadow-sm">
+              <span className="bg-[#066432] text-white text-[9px] font-black h-4 min-w-4 px-1 rounded-full flex items-center justify-center animate-pulse shadow-sm">
                 {thread.unreadCount}
               </span>
             )}
@@ -143,7 +143,7 @@ export function ThreadListItem({
           {thread.lastSenderName && (
             <span
               className={`mr-1 font-bold ${
-                hasUnread && !isActive ? "text-[#5b21b6]" : "text-gray-700"
+                hasUnread && !isActive ? "text-[#066432]" : "text-gray-700"
               }`}
             >
               {thread.lastSenderName}:

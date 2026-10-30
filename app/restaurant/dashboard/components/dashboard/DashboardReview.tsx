@@ -40,7 +40,7 @@ export default function DashboardReview({
     <div
       style={{
         background: "#fff",
-        border: "1px solid #ddd6fe",
+        border: "1px solid #c7e3d1",
         borderRadius: 16,
         padding: 32,
       }}
@@ -55,9 +55,9 @@ export default function DashboardReview({
       >
         <span
           style={{
-            background: "#f1ebff",
-            color: "#6d28d9",
-            border: "1px solid #c4b5fd",
+            background: "#e6f2ea",
+            color: "#138a4b",
+            border: "1px solid #97ccab",
             borderRadius: 20,
             padding: "4px 12px",
             fontSize: 12,
@@ -76,7 +76,7 @@ export default function DashboardReview({
 
       <h2
         style={{
-          color: "#5b21b6",
+          color: "#066432",
           fontWeight: 700,
           fontSize: 22,
           margin: "0 0 8px",
@@ -84,7 +84,7 @@ export default function DashboardReview({
       >
         Business review pending
       </h2>
-      <p style={{ color: "#7c3aed", marginBottom: 24, fontSize: 14 }}>
+      <p style={{ color: "#138a4b", marginBottom: 24, fontSize: 14 }}>
         Your credentials and legal certificates have been successfully received
         and are currently undergoing admin check verification.
       </p>
@@ -100,10 +100,10 @@ export default function DashboardReview({
         {/* Compliance Documents Card */}
         <div
           style={{
-            background: isDocumentsUploaded ? "#f4fbf7" : "#fefaf4",
+            background: isDocumentsUploaded ? "#f4fbf7" : "#fff7f0",
             border: isDocumentsUploaded
-              ? "1px solid #ddd6fe"
-              : "1px solid #fff4d6",
+              ? "1px solid #c7e3d1"
+              : "1px solid #fff1e4",
             borderRadius: 12,
             padding: 16,
           }}
@@ -125,7 +125,7 @@ export default function DashboardReview({
               <>
                 <CheckCircle2 size={18} className="text-violet-600" />
                 <span
-                  style={{ color: "#5b21b6", fontWeight: 700, fontSize: 16 }}
+                  style={{ color: "#066432", fontWeight: 700, fontSize: 16 }}
                 >
                   ✓ Submitted
                 </span>
@@ -146,10 +146,10 @@ export default function DashboardReview({
         {/* Bank Account Details Card */}
         <div
           style={{
-            background: isBankDetailsCompleted ? "#f4fbf7" : "#fefaf4",
+            background: isBankDetailsCompleted ? "#f4fbf7" : "#fff7f0",
             border: isBankDetailsCompleted
-              ? "1px solid #ddd6fe"
-              : "1px solid #fff4d6",
+              ? "1px solid #c7e3d1"
+              : "1px solid #fff1e4",
             borderRadius: 12,
             padding: 16,
           }}
@@ -171,7 +171,7 @@ export default function DashboardReview({
               <>
                 <CheckCircle2 size={18} className="text-violet-600" />
                 <span
-                  style={{ color: "#5b21b6", fontWeight: 700, fontSize: 16 }}
+                  style={{ color: "#066432", fontWeight: 700, fontSize: 16 }}
                 >
                   ✓ Completed
                 </span>

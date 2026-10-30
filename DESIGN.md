@@ -1,30 +1,31 @@
-# OyaEat design system (violet + mango)
+# OyaEat design system (green + orange)
 
-One system for the public site, customer app, restaurant, rider and superadmin dashboards.
+One system for the public site, customer app, restaurant, rider and superadmin dashboards, matching the mobile app.
 Tokens live in `app/globals.css` (`:root`, `.dark`, `@theme inline`). Never hardcode hex in new code;
-use the semantic Tailwind classes below.
+use the semantic Tailwind classes below. Note: the legacy class names `violet-*` and `mango-*` are kept so existing
+screens did not need rewriting; `violet-*` now resolves to the brand GREEN scale and `mango-*` to the ORANGE scale.
 
 ## Color roles
 | Role | Token / class | Hex | Use |
 |---|---|---|---|
-| Brand / structure | `primary`, `violet-700` | `#5b21b6` | headings accents, primary buttons, links, selected tabs, focus |
-| Deep violet | `sidebar`, `violet-900` | `#2a1156` | sidebars, hero bands, dark surfaces |
-| Soft violet | `accent` (hover/selected surface), `secondary`, `muted`, `violet-50/100` | `#f1ebff` | tinted cards, hover, chips |
-| Mango (action) | `cta` / `cta-foreground`, `mango-400` | `#fdba2d` | THE one key action per screen (Order now, Accept, Pay), promos, ratings, active sidebar marker |
-| Mango deep | `mango-600/700` | `#d97f06` | mango text on light backgrounds (contrast safe) |
-| Cream | `cream`, `mango-50/100` | `#fff4d6` | warm section backgrounds, warning chips |
-| Ink | `foreground` / `muted-foreground` | `#1a1033` / `#6b6480` | text |
-| Success | `success`, `success-soft` | `#15803d` | delivered / approved / online ONLY. Green is status, not brand |
+| Brand / structure | `primary`, `violet-700` | `#066432` | headings accents, primary buttons, links, selected tabs, focus |
+| Deep green | `sidebar`, `violet-900` | `#03381c` | sidebars, hero bands, dark surfaces |
+| Soft green | `accent`, `secondary`, `muted`, `violet-50/100` | `#e6f2ea` | tinted cards, hover, chips |
+| Orange (action) | `cta` / `cta-foreground`, `mango-400/500` | `#f25f00` | THE one key action per screen (Order now, Accept, Pay), promos, active sidebar marker |
+| Orange deep | `mango-600/700` | `#c94d00` | orange text on light backgrounds (contrast safe) |
+| Cream | `cream`, `mango-50/100` | `#fff1e4` | warm section backgrounds, warning chips |
+| Ink | `foreground` / `muted-foreground` | `#10231a` / `#5f7066` | text |
+| Success | `success`, `success-soft` | `#15803d` | delivered / approved / online status |
 | Danger | `destructive` | `#c8372d` | errors, reject, cancel |
 
 ## Rules
-1. Violet is the default. Mango is scarce: at most one mango button per view, plus ratings/promo badges.
-2. Mango buttons use `bg-cta text-cta-foreground`; text on mango is always dark ink, never white. `accent` is NOT mango: it is the soft violet hover surface shadcn components rely on.
-3. Green means success status only. Never use it for brand, buttons or navigation.
+1. Green is the default. Orange is scarce: at most one orange button per view, plus promo badges.
+2. Orange buttons use `bg-cta text-cta-foreground` (white text). `accent` is NOT orange: it is the soft green hover surface shadcn components rely on.
+3. The status "success" green (`success`) is only for delivered/approved/online chips; brand green is `primary`.
 4. Headings use `font-display` (Baloo 2); body uses Geist. Radius `rounded-xl` for cards, `rounded-full` for pills/CTAs.
 5. Every list/table screen needs a loading skeleton, an empty state and an error state.
 6. Cards use `shadow-card`; popovers/menus use `shadow-pop`. No flat bordered-only layouts on dashboards.
-7. Keep the same sidebar pattern across roles: deep violet sidebar, mango active marker, cream/violet-50 content area.
+7. Keep the same sidebar pattern across roles: deep green sidebar, orange active marker, cream/green-50 content area.
 
 ## Rollout order
 1. Foundation (tokens, palette remap): done.
@@ -64,9 +65,8 @@ use the semantic Tailwind classes below.
 - Marketing copy must come from what the product does. No invented earnings figures, ratings or insurance promises.
 
 ## Logo
-Source files live in `public/brand/` (SVG is the source of truth; PNGs are exports). Use `components/brand/Logo.tsx` in the UI, never retype "oyaeat" as text.
-- **Wordmark**: "oyaeat" in Baloo 2 ExtraBold (converted to outlines, so no font needed), leaning forward for speed ("oya" = let's go). Steam rises from the first "o"; a mango swoosh runs from the tail of the "y" under the word and ends in a spoon: a smile, a ladle, a hot meal served fast.
-- `oyaeat-logo.svg` for light backgrounds (violet word, mango swoosh); `oyaeat-logo-white.svg` for violet / dark backgrounds.
-- `oyaeat-sticker.svg`: the same logo with a white outline, for photos, banners and social posts.
-- `oyaeat-icon.svg` (+ `oyaeat-icon-192/512.png`, `apple-touch-icon.png`): the "o" with steam and the spoon smile on a violet tile. `app/icon.svg` and `app/apple-icon.png` are copies Next.js serves as the favicon.
-- Rules: keep clear space of at least the height of the "o" around the logo; the swoosh is always mango; never stretch, recolour the word, or put the violet logo on a violet background (use the white one).
+Files live in `public/brand/` (PNG exports of the master artwork, same as the mobile app's `assets/brand/`). Use `components/brand/Logo.tsx` in the UI, never retype "oyaeat" as text.
+- `oyaeat-logo.png` (horizontal, mark + wordmark) for light backgrounds; `oyaeat-logo-white.png` for green / dark backgrounds (the green letters turn white, the orange stays).
+- `oyaeat-stacked.png` / `oyaeat-stacked-white.png`: tall version with the tagline "Great Food. Delivered.", via `<Logo layout="stacked" />`, for big hero spots (auth side panels).
+- `oyaeat-icon-192/512.png`, `apple-touch-icon.png`; `app/icon.png` and `app/apple-icon.png` are what Next.js serves as the favicon.
+- Rules: keep clear space around the logo; never stretch or recolour it; use the white variant on green.

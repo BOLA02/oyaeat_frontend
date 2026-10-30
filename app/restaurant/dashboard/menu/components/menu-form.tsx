@@ -15,9 +15,9 @@ const inputStyle: React.CSSProperties = {
   width: "100%",
   padding: "0.625rem 1rem",
   backgroundColor: "#ffffff",
-  border: "1px solid #ddd6fe",
+  border: "1px solid #c7e3d1",
   borderRadius: "0.5rem",
-  color: "#5b21b6",
+  color: "#066432",
   fontSize: "0.875rem",
   outline: "none",
   transition: "border-color 0.15s",
@@ -29,7 +29,7 @@ const labelStyle: React.CSSProperties = {
   fontWeight: 600,
   textTransform: "uppercase",
   letterSpacing: "0.05em",
-  color: "#7c3aed",
+  color: "#138a4b",
   marginBottom: "0.375rem",
 };
 
@@ -74,7 +74,7 @@ export default function MenuForm({
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >,
   ) => {
-    e.currentTarget.style.borderColor = "#6d28d9";
+    e.currentTarget.style.borderColor = "#138a4b";
   };
 
   const handleBlur = (
@@ -82,7 +82,7 @@ export default function MenuForm({
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >,
   ) => {
-    e.currentTarget.style.borderColor = "#ddd6fe";
+    e.currentTarget.style.borderColor = "#c7e3d1";
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -146,17 +146,17 @@ export default function MenuForm({
     >
       <div
         className="max-h-[92dvh] w-full max-w-md overflow-y-auto rounded-t-3xl shadow-xl sm:rounded-2xl"
-        style={{ backgroundColor: "#ffffff", border: "1px solid #ddd6fe" }}
+        style={{ backgroundColor: "#ffffff", border: "1px solid #c7e3d1" }}
       >
         <div
           className="flex items-center justify-between px-6 py-5 border-b"
-          style={{ borderColor: "#f1ebff", backgroundColor: "#fbf9ff" }}
+          style={{ borderColor: "#e6f2ea", backgroundColor: "#f6f8f5" }}
         >
           <div>
-            <h2 className="text-lg font-bold" style={{ color: "#5b21b6" }}>
+            <h2 className="text-lg font-bold" style={{ color: "#066432" }}>
               {item ? "Edit Menu Item" : "Add Menu Item"}
             </h2>
-            <p className="text-xs mt-0.5" style={{ color: "#7c3aed" }}>
+            <p className="text-xs mt-0.5" style={{ color: "#138a4b" }}>
               {item
                 ? "Update the details below"
                 : "Fill in the details to add a new item"}
@@ -167,9 +167,9 @@ export default function MenuForm({
             onClick={onClose}
             type="button"
             className="p-1.5 rounded-lg transition-colors"
-            style={{ color: "#7c3aed" }}
+            style={{ color: "#138a4b" }}
             onMouseOver={(e) =>
-              (e.currentTarget.style.backgroundColor = "#f1ebff")
+              (e.currentTarget.style.backgroundColor = "#e6f2ea")
             }
             onMouseOut={(e) =>
               (e.currentTarget.style.backgroundColor = "transparent")
@@ -249,7 +249,7 @@ export default function MenuForm({
               Item Image{" "}
               <span
                 style={{
-                  color: "#c4b5fd",
+                  color: "#97ccab",
                   textTransform: "none",
                   fontWeight: 400,
                 }}
@@ -261,15 +261,15 @@ export default function MenuForm({
               className="relative w-full rounded-xl border-2 border-dashed overflow-hidden flex flex-col items-center justify-center cursor-pointer group transition-colors"
               style={{
                 height: "140px",
-                borderColor: "#ddd6fe",
+                borderColor: "#c7e3d1",
                 backgroundColor: "#fcfdfc",
               }}
               onClick={() => document.getElementById("imageUpload")?.click()}
               onMouseOver={(e) =>
-                (e.currentTarget.style.borderColor = "#6d28d9")
+                (e.currentTarget.style.borderColor = "#138a4b")
               }
               onMouseOut={(e) =>
-                (e.currentTarget.style.borderColor = "#ddd6fe")
+                (e.currentTarget.style.borderColor = "#c7e3d1")
               }
             >
               {previewUrl ? (
@@ -288,9 +288,9 @@ export default function MenuForm({
               ) : (
                 <div
                   className="flex flex-col items-center gap-2"
-                  style={{ color: "#7c3aed" }}
+                  style={{ color: "#138a4b" }}
                 >
-                  <div className="w-10 h-10 rounded-full bg-[#f1ebff] flex items-center justify-center text-[#6d28d9] group-hover:bg-[#e6e0f3] transition-colors">
+                  <div className="w-10 h-10 rounded-full bg-[#e6f2ea] flex items-center justify-center text-[#138a4b] group-hover:bg-[#e2eae4] transition-colors">
                     <ImagePlus className="w-5 h-5" />
                   </div>
                   <span className="text-xs font-semibold">
@@ -342,7 +342,7 @@ export default function MenuForm({
                 }
                 className="w-10 h-6 rounded-full cursor-pointer transition-colors flex items-center px-0.5"
                 style={{
-                  backgroundColor: formData.available ? "#5b21b6" : "#ddd6fe",
+                  backgroundColor: formData.available ? "#066432" : "#c7e3d1",
                 }}
               >
                 <div
@@ -359,7 +359,7 @@ export default function MenuForm({
             <label
               htmlFor="available"
               className="text-sm cursor-pointer select-none"
-              style={{ color: "#5b21b6", fontWeight: 500 }}
+              style={{ color: "#066432", fontWeight: 500 }}
               onClick={() =>
                 !submitting &&
                 setFormData((p) => ({ ...p, available: !p.available }))
@@ -377,11 +377,11 @@ export default function MenuForm({
               className="flex-1 py-2.5 rounded-lg text-sm font-semibold border transition-colors"
               style={{
                 backgroundColor: "#ffffff",
-                color: "#5b21b6",
-                borderColor: "#ddd6fe",
+                color: "#066432",
+                borderColor: "#c7e3d1",
               }}
               onMouseOver={(e) =>
-                (e.currentTarget.style.backgroundColor = "#fbf9ff")
+                (e.currentTarget.style.backgroundColor = "#f6f8f5")
               }
               onMouseOut={(e) =>
                 (e.currentTarget.style.backgroundColor = "#ffffff")
@@ -395,16 +395,16 @@ export default function MenuForm({
               disabled={submitting}
               className="flex-1 py-2.5 rounded-lg text-sm font-semibold text-white transition-colors"
               style={{
-                backgroundColor: submitting ? "#7c3aed" : "#5b21b6",
+                backgroundColor: submitting ? "#138a4b" : "#066432",
                 cursor: submitting ? "not-allowed" : "pointer",
               }}
               onMouseOver={(e) => {
                 if (!submitting)
-                  e.currentTarget.style.backgroundColor = "#3b0f7a";
+                  e.currentTarget.style.backgroundColor = "#03381c";
               }}
               onMouseOut={(e) => {
                 if (!submitting)
-                  e.currentTarget.style.backgroundColor = "#5b21b6";
+                  e.currentTarget.style.backgroundColor = "#066432";
               }}
             >
               {submitting ? "Saving…" : item ? "Update Item" : "Add Item"}

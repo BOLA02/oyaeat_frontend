@@ -11,14 +11,14 @@ import { AlertCircle, Mail, Lock, ArrowRight, ShieldCheck } from "lucide-react";
 
 // ── Brand tokens ──────────────────────────────────────────────────────────────
 const C = {
-  brand: "#3b0f7a",
-  brandMid: "#6d28d9",
-  brandLight: "#8b5cf6",
-  bg: "#fffbef",
+  brand: "#03381c",
+  brandMid: "#138a4b",
+  brandLight: "#26925a",
+  bg: "#fff7f0",
   white: "#FFFFFF",
   textDark: "#111827",
-  textMuted: "#6b6480",
-  border: "#e6e0f3",
+  textMuted: "#5f7066",
+  border: "#e2eae4",
   error: "#c8372d",
 };
 
@@ -32,7 +32,7 @@ function IllustrationPanel() {
   return (
     <div className="lp-doodles relative hidden min-h-screen flex-col justify-between p-10 text-white lg:flex">
       <div>
-        <Logo variant="white" className="h-24 w-auto" />
+        <Logo variant="white" layout="stacked" className="h-36 w-auto" />
         <p className="mt-1 text-xs font-bold uppercase tracking-[0.2em] text-violet-200">Super admin</p>
       </div>
       <div className="max-w-md">

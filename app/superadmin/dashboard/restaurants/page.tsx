@@ -198,7 +198,7 @@ export default function RestaurantsPage() {
                   className="flex h-9 w-9 items-center justify-center rounded-xl"
                   style={{ backgroundColor: "#1B433218" }}
                 >
-                  <Store className="h-5 w-5" style={{ color: "#3b0f7a" }} />
+                  <Store className="h-5 w-5" style={{ color: "#03381c" }} />
                 </div>
                 <div>
                   <p className="text-xl font-black tracking-tight text-foreground">
@@ -218,7 +218,7 @@ export default function RestaurantsPage() {
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Search by name or email..."
-                className="pl-10 h-10 rounded-xl border-border bg-card text-foreground placeholder:text-muted-foreground focus-visible:ring-[#3b0f7a]"
+                className="pl-10 h-10 rounded-xl border-border bg-card text-foreground placeholder:text-muted-foreground focus-visible:ring-[#03381c]"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -227,7 +227,7 @@ export default function RestaurantsPage() {
               variant="outline"
               onClick={fetchAll}
               disabled={loading}
-              className="h-10 rounded-xl border-border bg-card text-[#6d28d9] font-semibold hover:bg-[#f5f3ff] transition-all gap-2 px-4"
+              className="h-10 rounded-xl border-border bg-card text-[#138a4b] font-semibold hover:bg-[#f3f9f5] transition-all gap-2 px-4"
             >
               <RefreshCw
                 className={`h-4 w-4 ${loading ? "animate-spin" : ""}`}
@@ -246,7 +246,7 @@ export default function RestaurantsPage() {
 
           {loading && (
             <div className="flex items-center justify-center py-20">
-              <RefreshCw className="h-6 w-6 animate-spin text-[#6d28d9]" />
+              <RefreshCw className="h-6 w-6 animate-spin text-[#138a4b]" />
             </div>
           )}
 

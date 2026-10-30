@@ -47,7 +47,7 @@ export function RestaurantCard({
         {/* Initials square */}
         <div
           className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl text-sm font-black text-white"
-          style={{ backgroundColor: "#6d28d9" }}
+          style={{ backgroundColor: "#138a4b" }}
         >
           {restaurant.name
             .split(" ")
@@ -91,7 +91,7 @@ export function RestaurantCard({
           </div>
           <div
             className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg"
-            style={{ backgroundColor: "#fffbef" }}
+            style={{ backgroundColor: "#fff7f0" }}
           >
             {isExpanded ? (
               <ChevronUp className="h-4 w-4 text-muted-foreground" />
@@ -104,7 +104,7 @@ export function RestaurantCard({
 
       {/* ── Expanded panel ───────────────────────────── */}
       {isExpanded && (
-        <div className="border-t border-border bg-[#fffbef] px-5 py-5 space-y-4">
+        <div className="border-t border-border bg-[#fff7f0] px-5 py-5 space-y-4">
           {/* Documents */}
           <div>
             <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3">
@@ -162,7 +162,7 @@ export function RestaurantCard({
                     onApprove?.(restaurant.id);
                   }}
                   className="flex-1 rounded-xl font-bold text-white shadow-sm gap-2"
-                  style={{ backgroundColor: "#3b0f7a" }}
+                  style={{ backgroundColor: "#03381c" }}
                 >
                   <Check className="h-4 w-4" />
                   Approve Restaurant

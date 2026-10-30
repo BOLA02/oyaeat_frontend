@@ -44,7 +44,7 @@ export function PromoCard({
       <div
         className={cn(
           "absolute inset-0",
-          img ? "bg-gradient-to-t from-[#1a1033]/90 via-[#1a1033]/40 to-[#1a1033]/5" : "",
+          img ? "bg-gradient-to-t from-[#10231a]/90 via-[#10231a]/40 to-[#10231a]/5" : "",
         )}
       />
 

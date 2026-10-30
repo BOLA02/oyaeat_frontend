@@ -52,7 +52,7 @@ export function ReasonModal({
       case "warning":
         return "bg-mango-600 hover:bg-mango-700 focus-visible:ring-mango-600";
       default:
-        return "bg-[#6d28d9] hover:bg-[#3b0f7a] focus-visible:ring-[#3b0f7a]";
+        return "bg-[#138a4b] hover:bg-[#03381c] focus-visible:ring-[#03381c]";
     }
   };
 
@@ -97,7 +97,7 @@ export function ReasonModal({
                 autoFocus
                 rows={4}
                 placeholder={placeholder}
-                className="w-full p-3 rounded-xl border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#3b0f7a] focus:border-[#3b0f7a] text-sm resize-none"
+                className="w-full p-3 rounded-xl border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#03381c] focus:border-[#03381c] text-sm resize-none"
                 value={reasonText}
                 onChange={(e) => setReasonText(e.target.value)}
               />

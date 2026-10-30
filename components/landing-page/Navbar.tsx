@@ -49,7 +49,7 @@ export function Logo({ className = "", size = "md" }: { className?: string; size
       aria-label="OyaEat home"
       className={`flex items-center flex-shrink-0 ${className}`}
     >
-      <BrandLogo variant="white" className={size === "lg" ? "h-20 w-auto" : "h-14 w-auto"} />
+      <BrandLogo variant="white" className={size === "lg" ? "h-16 w-auto" : "h-12 w-auto"} />
     </Link>
   );
 }
@@ -107,7 +107,7 @@ const Navbar = () => {
       <header
         className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
           scrolled
-            ? "bg-[var(--lp-violet-800)]/95 backdrop-blur-md shadow-[0_6px_24px_rgba(26,16,51,0.25)]"
+            ? "bg-[var(--lp-violet-800)]/95 backdrop-blur-md shadow-[0_6px_24px_rgba(11,42,26,0.25)]"
             : "bg-transparent"
         }`}
       >
@@ -206,7 +206,7 @@ const Navbar = () => {
             </Link>
             <Link
               href="/customer"
-              className="text-sm font-extrabold bg-[var(--lp-mango)] text-[var(--lp-violet-950)] px-5 py-2.5 rounded-full shadow-[0_3px_0_#c98a06] hover:-translate-y-px hover:shadow-[0_4px_0_#c98a06] active:translate-y-px active:shadow-[0_1px_0_#c98a06] transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              className="text-sm font-extrabold bg-[var(--lp-mango)] text-[var(--lp-violet-950)] px-5 py-2.5 rounded-full shadow-[0_3px_0_#c94d00] hover:-translate-y-px hover:shadow-[0_4px_0_#c94d00] active:translate-y-px active:shadow-[0_1px_0_#c94d00] transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
               Order now
             </Link>

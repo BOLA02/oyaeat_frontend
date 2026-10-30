@@ -32,8 +32,8 @@ interface CommissionFeesProps {
 }
 
 const inputCls =
-  "w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50/50 text-gray-900 font-semibold outline-none focus:border-[#5b21b6] focus:bg-white transition-all text-sm";
-const labelCls = "block text-xs font-bold uppercase tracking-widest text-[#5b21b6] mb-2";
+  "w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50/50 text-gray-900 font-semibold outline-none focus:border-[#066432] focus:bg-white transition-all text-sm";
+const labelCls = "block text-xs font-bold uppercase tracking-widest text-[#066432] mb-2";
 
 export function CommissionFees({
   platformCommission,
@@ -46,7 +46,7 @@ export function CommissionFees({
   return (
     <div className="bg-card rounded-2xl border border-gray-100 p-8 shadow-sm bg-white">
       <div className="flex items-center gap-3 border-b border-gray-100 pb-4 mb-6">
-        <DollarSign className="w-6 h-6 text-[#5b21b6]" />
+        <DollarSign className="w-6 h-6 text-[#066432]" />
         <h2 className="text-xl font-bold text-gray-900">Commission & Fees</h2>
       </div>
 

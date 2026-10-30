@@ -130,7 +130,7 @@ export default function GalleryFormContent() {
               Step 6 of 6
             </span>
             <h3 className="text-2xl font-extrabold text-gray-900 flex items-center gap-2 mt-1">
-              <ImageIcon className="text-[#5b21b6] w-6 h-6" /> Storefront
+              <ImageIcon className="text-[#066432] w-6 h-6" /> Storefront
               Showcase Photos
             </h3>
             <p className="text-xs text-gray-500 mt-1 leading-relaxed">
@@ -145,7 +145,7 @@ export default function GalleryFormContent() {
             </div>
           )}
 
-          <div className="border-2 border-dashed border-gray-200 hover:border-[#5b21b6]/40 bg-gray-50/50 rounded-2xl p-8 text-center relative transition-all group cursor-pointer">
+          <div className="border-2 border-dashed border-gray-200 hover:border-[#066432]/40 bg-gray-50/50 rounded-2xl p-8 text-center relative transition-all group cursor-pointer">
             <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2 group-hover:scale-105 transition-transform" />
             <span className="text-xs font-bold text-gray-700 block">
               Select visual files from desktop
@@ -194,7 +194,7 @@ export default function GalleryFormContent() {
           <Button
             type="submit"
             disabled={loading || selectedFiles.length < 3}
-            className="w-full bg-[#5b21b6] hover:bg-[#2a1156] text-white rounded-xl h-11 font-bold shadow transition-all"
+            className="w-full bg-[#066432] hover:bg-[#03381c] text-white rounded-xl h-11 font-bold shadow transition-all"
           >
             {loading ? (
               <>

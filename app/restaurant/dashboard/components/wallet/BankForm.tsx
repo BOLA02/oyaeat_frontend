@@ -47,14 +47,14 @@ export default function BankForm({
   };
 
   return (
-    <div className="max-w-md rounded-2xl border p-6 shadow-sm animate-in fade-in-50 duration-200 bg-white border-[#ddd6fe]">
+    <div className="max-w-md rounded-2xl border p-6 shadow-sm animate-in fade-in-50 duration-200 bg-white border-[#c7e3d1]">
       <div className="flex items-center gap-2 mb-4">
-        <Building2 className="h-5 w-5 text-[#6d28d9]" />
+        <Building2 className="h-5 w-5 text-[#138a4b]" />
         <h2 className="text-lg font-bold text-gray-900">
           Link Settlement Account
         </h2>
       </div>
-      <p className="text-xs text-[#6b6480] mb-4">
+      <p className="text-xs text-[#5f7066] mb-4">
         Specify the settlement destination where funds should be processed
         during payouts.
       </p>
@@ -132,7 +132,7 @@ export default function BankForm({
           <Button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-[#3b0f7a] text-white"
+            className="w-full bg-[#03381c] text-white"
           >
             {isLoading ? "Saving..." : "Save Account"}
           </Button>

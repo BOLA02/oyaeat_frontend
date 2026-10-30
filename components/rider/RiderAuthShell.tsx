@@ -10,7 +10,7 @@ export default function RiderAuthShell({ title, subtitle, children, footer }: { 
           <ArrowLeft className="h-4 w-4" /> Back
         </Link>
         <div className="max-w-md">
-          <Logo variant="white" className="h-28 w-auto" />
+          <Logo variant="white" layout="stacked" className="h-40 w-auto" />
           <p className="mt-1 text-xs font-bold uppercase tracking-[0.2em] text-violet-200">Riders</p>
           <h2 className="font-display mt-8 text-4xl font-extrabold leading-tight">Ride on your schedule. <span className="text-cta">Deliver with OyaEat.</span></h2>
           <p className="mt-3 text-lg text-violet-100">Go online when you want, accept the orders you like, and track every naira you earn.</p>
