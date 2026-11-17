@@ -70,7 +70,7 @@ export default function RestaurantsPage() {
   const { toast } = useToast();
 
   const adminToken =
-    typeof window !== "undefined" ? localStorage.getItem("admin_token") : null;
+    typeof window !== "undefined" ? sessionStorage.getItem("admin_token") : null;
   const authHeader = adminToken
     ? { Authorization: `Bearer ${adminToken}` }
     : {};

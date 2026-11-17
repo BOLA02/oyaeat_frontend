@@ -71,7 +71,7 @@ export default function RestaurantReviews({ businessId }: { businessId: number }
         ))}
       </ul>
       {page < pages && (
-        <button onClick={() => load(page + 1)} disabled={loading} className="mx-auto mt-4 flex h-11 items-center gap-2 rounded-full border border-border px-6 text-sm font-bold transition hover:bg-violet-50 disabled:opacity-60">
+        <button onClick={() => load(page + 1)} disabled={loading} className="mx-auto mt-4 flex h-11 items-center gap-2 rounded-full border border-border px-6 text-sm font-bold transition hover:bg-mint-50 disabled:opacity-60">
           {loading && <Loader2 className="h-4 w-4 animate-spin" />} Show more
         </button>
       )}

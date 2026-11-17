@@ -13,20 +13,38 @@ export const resolveImg = (url?: string | null) => {
 };
 
 export type CustomerUser = {
-  id?: number;
+  // Stable account identifier returned by the customer auth API. Cart
+  // ownership uses this, never a token, email address, or display name.
+  id: number | string;
   firstName?: string;
   lastName?: string;
   email?: string;
   phone?: string;
 };
 
+export const getCustomerId = (user: CustomerUser | null | undefined) =>
+  user?.id === undefined || user.id === null || String(user.id).trim() === ""
+    ? null
+    : String(user.id);
+
+export const CUSTOMER_SESSION_EVENT = "oyaeat:customer-session";
+const LEGACY_PENDING_PAYMENT_KEY = "oyaeat_pending_payment";
+const CUSTOMER_TOKEN_KEY = "customer_token";
+const CUSTOMER_USER_KEY = "customer_user";
+const LOGOUT_TIMEOUT_MS = 8_000;
+const logoutRequests = new Map<string, Promise<void>>();
+
+const notifyCustomerSessionChanged = () => {
+  if (typeof window !== "undefined") window.dispatchEvent(new Event(CUSTOMER_SESSION_EVENT));
+};
+
 export const getToken = () =>
-  typeof window === "undefined" ? null : localStorage.getItem("customer_token");
+  typeof window === "undefined" ? null : sessionStorage.getItem(CUSTOMER_TOKEN_KEY);
 
 export const getUser = (): CustomerUser | null => {
   if (typeof window === "undefined") return null;
   try {
-    const raw = localStorage.getItem("customer_user");
+    const raw = sessionStorage.getItem(CUSTOMER_USER_KEY);
     return raw ? JSON.parse(raw) : null;
   } catch {
     return null;
@@ -34,8 +52,156 @@ export const getUser = (): CustomerUser | null => {
 };
 
 export const clearSession = () => {
-  localStorage.removeItem("customer_token");
-  localStorage.removeItem("customer_user");
+  sessionStorage.removeItem(CUSTOMER_USER_KEY);
+  sessionStorage.removeItem(CUSTOMER_TOKEN_KEY);
+  notifyCustomerSessionChanged();
+};
+
+type CustomerSessionSnapshot = { token: string; customerId: string };
+
+const currentCustomerSession = (): CustomerSessionSnapshot | null => {
+  const token = getToken();
+  const customerId = getCustomerId(getUser());
+  return token && customerId ? { token, customerId } : null;
+};
+
+/**
+ * Explicit logout revokes the token captured from this tab only. Local state
+ * is cleared before the request settles, so a network failure cannot leave a
+ * usable session behind and a later login is never touched by this request.
+ */
+export const logoutCustomer = (): Promise<void> => {
+  const session = currentCustomerSession();
+  clearSession();
+  if (!session) return Promise.resolve();
+
+  const existing = logoutRequests.get(session.token);
+  if (existing) return existing;
+
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), LOGOUT_TIMEOUT_MS);
+  const request = fetch(`${API_URL}/customer/auth/logout`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${session.token}` },
+    signal: controller.signal,
+  })
+    // Logout is best effort. The captured token may already be expired or
+    // revoked; the local tab must still stay signed out in every outcome.
+    .then(() => undefined)
+    .catch(() => undefined)
+    .finally(() => {
+      window.clearTimeout(timeout);
+      logoutRequests.delete(session.token);
+    });
+  logoutRequests.set(session.token, request);
+  return request;
+};
+
+export type CustomerAuthPayload = {
+  token: string;
+  user: CustomerUser;
+};
+
+/**
+ * Persists a customer session in the same shape used by email/password login.
+ * Authentication responses must come from the OyaEat API, never from Google.
+ */
+export const saveCustomerSession = (payload: CustomerAuthPayload) => {
+  if (!payload?.token || !payload?.user || !getCustomerId(payload.user)) {
+    throw new ApiError("We couldn't complete sign-in. Please try again.", 0);
+  }
+  // Authentication is tab-scoped. Do not fall back to the old localStorage
+  // keys: that could silently restore another tab's customer session.
+  sessionStorage.setItem(CUSTOMER_USER_KEY, JSON.stringify(payload.user));
+  sessionStorage.setItem(CUSTOMER_TOKEN_KEY, payload.token);
+  notifyCustomerSessionChanged();
+};
+
+/** Updates the cached profile without changing the authenticated identity. */
+export const saveCustomerUser = (user: CustomerUser) => {
+  if (!getCustomerId(user)) {
+    throw new ApiError("We couldn't update your session. Please sign in again.", 0);
+  }
+  sessionStorage.setItem(CUSTOMER_USER_KEY, JSON.stringify(user));
+  notifyCustomerSessionChanged();
+};
+
+/**
+ * Applies a profile response only if it still belongs to the request's
+ * original session. A password-change token is rotated atomically for this
+ * tab; profile-only responses leave the existing token untouched.
+ */
+export const applyCustomerProfileUpdate = (
+  expected: CustomerSessionSnapshot,
+  user: CustomerUser,
+  replacementToken?: string | null,
+) => {
+  if (
+    !activeSessionMatches(expected.token, expected.customerId) ||
+    getCustomerId(user) !== expected.customerId
+  ) {
+    return false;
+  }
+  sessionStorage.setItem(CUSTOMER_USER_KEY, JSON.stringify(user));
+  if (replacementToken) sessionStorage.setItem(CUSTOMER_TOKEN_KEY, replacementToken);
+  notifyCustomerSessionChanged();
+  return true;
+};
+
+export const customerSessionSnapshot = () => currentCustomerSession();
+
+const configuredAppOrigin = () =>
+  process.env.NEXT_PUBLIC_APP_ORIGIN?.replace(/\/$/, "") || "";
+
+/** Uses the configured approved frontend origin, with the current origin for local development. */
+export const customerPaymentCallbackUrl = (currentOrigin: string) =>
+  new URL("/customer/dashboard/orders", configuredAppOrigin() || currentOrigin).toString();
+
+/** Pending-payment markers are scoped so one account cannot consume another's return. */
+export const pendingPaymentKey = (customerId: string | number) =>
+  `oyaeat_pending_payment:${encodeURIComponent(String(customerId))}`;
+
+export type PendingPayment = { customerId: string; orderId: string; reference: string };
+
+export const savePendingPayment = (payment: PendingPayment) => {
+  if (typeof window !== "undefined") {
+    sessionStorage.setItem(pendingPaymentKey(payment.customerId), JSON.stringify(payment));
+  }
+};
+
+export const getPendingPayment = (customerId: string | number): PendingPayment | null => {
+  if (typeof window === "undefined") return null;
+  const current = sessionStorage.getItem(pendingPaymentKey(customerId));
+  if (current) {
+    try {
+      const parsed = JSON.parse(current);
+      return parsed?.customerId === String(customerId) && parsed?.orderId && parsed?.reference ? parsed : null;
+    } catch { return null; }
+  }
+  // Support the short-lived old marker without allowing a different account
+  // to consume it.
+  try {
+    const legacy = sessionStorage.getItem(LEGACY_PENDING_PAYMENT_KEY);
+    const parsed = legacy ? JSON.parse(legacy) : null;
+    return parsed?.customerId === String(customerId) && parsed?.orderId && parsed?.reference ? parsed : null;
+  } catch {
+    return null;
+  }
+};
+
+export const hasPendingPayment = (customerId: string | number) => !!getPendingPayment(customerId);
+
+export const clearPendingPayment = (customerId: string | number) => {
+  if (typeof window === "undefined") return;
+  sessionStorage.removeItem(pendingPaymentKey(customerId));
+  try {
+    const legacy = sessionStorage.getItem(LEGACY_PENDING_PAYMENT_KEY);
+    if (legacy && JSON.parse(legacy)?.customerId === String(customerId)) {
+      sessionStorage.removeItem(LEGACY_PENDING_PAYMENT_KEY);
+    }
+  } catch {
+    // An unscoped malformed legacy value is intentionally left untouched.
+  }
 };
 
 export class ApiError extends Error {
@@ -53,6 +219,10 @@ export async function api<T = any>(
 ): Promise<T> {
   const { auth, headers, ...rest } = opts;
   const token = auth ? getToken() : null;
+  const customerId = auth ? getCustomerId(getUser()) : null;
+  if (auth && (!token || !customerId)) {
+    throw new ApiError("Your session has expired. Please sign in again.", 401);
+  }
   let res: Response;
   try {
     res = await fetch(`${API_URL}${path}`, {
@@ -69,11 +239,16 @@ export async function api<T = any>(
       0,
     );
   }
+  // Do not allow a response made as Customer A to update UI after this tab
+  // has changed to Customer B, logged out, or received a new token.
+  if (auth && !activeSessionMatches(token, customerId)) {
+    throw new CustomerSessionChangedError();
+  }
   let json: any = null;
   try {
     json = await res.json();
   } catch {}
-  if (res.status === 401 && auth) {
+  if (res.status === 401 && auth && activeSessionMatches(token, customerId)) {
     clearSession();
     if (typeof window !== "undefined") {
       window.location.href = `/customer/login?next=${encodeURIComponent(window.location.pathname)}`;
@@ -86,6 +261,30 @@ export async function api<T = any>(
     );
   }
   return json as T;
+}
+
+/** The tab changed account while an authenticated request was in flight. */
+export class CustomerSessionChangedError extends ApiError {
+  constructor() {
+    super("Your customer session changed. Please retry the request.", 409);
+  }
+}
+
+const activeSessionMatches = (token: string | null, customerId: string | null) =>
+  getToken() === token && getCustomerId(getUser()) === customerId;
+
+/**
+ * Exchanges a Google Identity Services ID token for an OyaEat customer session.
+ * The API must verify the credential and return the normal customer auth payload.
+ */
+export async function authenticateCustomerWithGoogle(credential: string) {
+  return api<{ success: boolean; data: CustomerAuthPayload }>(
+    "/api/v1/auth/google",
+    {
+      method: "POST",
+      body: JSON.stringify({ credential }),
+    },
+  );
 }
 
 export const ORDER_STEPS = [
@@ -119,11 +318,11 @@ export const statusMeta = (status: string) => {
     case "ready":
       return { label: "Ready", tone: "mango" as const };
     case "confirmed":
-      return { label: "Confirmed", tone: "violet" as const };
+      return { label: "Confirmed", tone: "primary" as const };
     case "pending":
-      return { label: "Placed", tone: "violet" as const };
+      return { label: "Placed", tone: "primary" as const };
     default:
-      return { label: status.replace(/_/g, " "), tone: "violet" as const };
+      return { label: status.replace(/_/g, " "), tone: "primary" as const };
   }
 };
 

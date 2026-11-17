@@ -57,7 +57,7 @@ function Frame({ children }: { children: React.ReactNode }) {
   useEffect(() => setOpen(false), [pathname]);
 
   const logout = () => {
-    localStorage.removeItem("riderToken");
+    sessionStorage.removeItem("rider_token");
     router.replace("/rider/login");
   };
 
@@ -156,7 +156,7 @@ export default function RiderShell({ children }: { children: React.ReactNode }) 
   const router = useRouter();
   const [ready, setReady] = useState(false);
   useEffect(() => {
-    if (!localStorage.getItem("riderToken")) {
+    if (!sessionStorage.getItem("rider_token")) {
       router.replace("/rider/login");
       return;
     }

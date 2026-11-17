@@ -52,7 +52,7 @@ const TONES = {
   success: "bg-success-soft text-success",
   danger: "bg-destructive/10 text-destructive",
   mango: "bg-mango-100 text-mango-800",
-  violet: "bg-violet-100 text-violet-800",
+  primary: "bg-mint-100 text-mint-800",
 } as const;
 
 export function StatusPill({ status }: { status: string }) {
@@ -83,20 +83,20 @@ export function QtyStepper({
   const btn =
     size === "sm" ? "h-8 w-8" : "h-10 w-10";
   return (
-    <div className="inline-flex items-center rounded-full bg-violet-50 p-1">
+    <div className="inline-flex items-center rounded-full bg-mint-100 p-1">
       <button
         onClick={onRemove}
         aria-label="Remove one"
         className={cn(
           btn,
-          "grid place-items-center rounded-full bg-card text-violet-800 shadow-sm transition active:scale-95",
+          "grid place-items-center rounded-full bg-card text-mint-800 shadow-sm transition active:scale-95",
         )}
       >
         <Minus className="h-4 w-4" />
       </button>
       <span
         aria-live="polite"
-        className="min-w-8 text-center text-sm font-extrabold text-violet-900"
+        className="min-w-8 text-center text-sm font-extrabold text-mint-900"
       >
         {quantity}
       </span>

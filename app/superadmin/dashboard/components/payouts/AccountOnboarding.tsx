@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import { Link2, Loader2 } from "lucide-react";
 
 interface OnboardingProps {
   onSave: (data: any) => Promise<void>;
@@ -9,45 +7,24 @@ interface OnboardingProps {
 }
 
 export default function AccountOnboarding({
-  onSave,
-  processing,
+  onSave: _onSave,
+  processing: _processing,
 }: OnboardingProps) {
-  const [form, setForm] = useState({
-    userEmail: "",
-    userType: "restaurant",
-    bankName: "",
-    accountNumber: "",
-    accountName: "",
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (form.accountNumber.length !== 10)
-      return alert("Account number must be 10 digits");
-    onSave(form).then(() => {
-      setForm({
-        userEmail: "",
-        userType: "restaurant",
-        bankName: "",
-        accountNumber: "",
-        accountName: "",
-      });
-    });
-  };
-
   return (
     <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
       <div>
         <h3 className="text-base font-bold text-gray-900">
-          Manual Email Account Linker
+          Bank account onboarding
         </h3>
         <p className="text-xs text-gray-400 mt-0.5">
-          Link bank validation keys manually compiled from user onboarding email
-          requests.
+          Manual email-based account linking is disabled. Use the documented vendor or rider payout-account workflow.
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-3.5">
+      {/* Financial account details must never be collected from support email. */}
+      <div className="rounded-lg bg-amber-50 p-4 text-sm text-amber-900">Provider account operations remain unavailable until backend certification and the documented workflow are enabled.</div>
+      {/*
+      <form className="space-y-3.5">
         <div>
           <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">
             Account Owner Email
@@ -141,6 +118,7 @@ export default function AccountOnboarding({
           Commit Bank Linking Record
         </button>
       </form>
+      */}
     </div>
   );
 }

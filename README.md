@@ -19,7 +19,7 @@ page and partner-onboarding funnel.
 - Socket.IO (live delivery/dispatch events)
 - Paystack (payment initialization)
 - REST client layer for vendor, wallet, chat, and admin workflows (`lib/api/*`)
-- Client-side session/cart persistence via `localStorage`
+- Tab-scoped customer sessions via `sessionStorage`, plus persistent guest and account-scoped carts in `localStorage`
 
 This repository has no `route.ts` API endpoints — it requires a separately
 running backend.
@@ -38,12 +38,24 @@ Create `.env.local` with at minimum:
 
 ```
 NEXT_PUBLIC_API_BASE_URL=http://localhost:5000
+NEXT_PUBLIC_APP_ORIGIN=http://localhost:3000
 NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_key_here
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=your_google_web_client_id.apps.googleusercontent.com
 ```
 
 `NEXT_PUBLIC_API_BASE_URL` must point at a running instance of the OyaEat
 backend (not included in this repo). Without it, all data-fetching screens
 (discovery, orders, wallet, dispatch, admin) will fail to load.
+
+`NEXT_PUBLIC_APP_ORIGIN` is the approved frontend origin used to form Paystack
+callback URLs. In local development it may be omitted and the current browser
+origin is used instead.
+
+`NEXT_PUBLIC_GOOGLE_CLIENT_ID` is the public OAuth 2.0 **Web application**
+client ID used by Google Identity Services for customer sign-in and sign-up.
+Configure the deployed web origin and local development origin under
+**Authorized JavaScript origins** in Google Cloud Console. Do not expose a
+Google client secret or service-account credentials in the frontend.
 
 ## Project structure
 
@@ -71,7 +83,7 @@ config/           app configuration
 | Area                | Status                                                                                                                                                                                                                                            |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Public landing page | Marketing nav, hero, restaurant/category cards, footer. Display data is currently hard-coded, not live.                                                                                                                                           |
-| Customer            | Signup/login, discovery, restaurant menus, cart (localStorage), checkout (cash/card/transfer), order creation + payment init, order tracking, dashboard shell.                                                                                    |
+| Customer            | Signup/login, discovery, restaurant menus, account-isolated localStorage cart, checkout (cash/card/transfer), order creation + payment init, order tracking, dashboard shell.                                                                    |
 | Restaurant partner  | Registration + phone/business verification, business creation + gallery upload, dashboard, order management, menu CRUD, staff, wallet/payouts, reviews, analytics, notifications, settings, advertising requests, suspension/verification states. |
 | Rider               | Registration/login, dashboard + shift toggle, live location pings, socket-based delivery matching, accept/complete deliveries, history, earnings, profile, support.                                                                               |
 | Super-admin         | Login, dashboard metrics, business approval/rejection/suspension, restaurant + rider admin, order monitoring, broadcast/ad moderation, payout queue, admin chat, live rider map, settings.                                                        |

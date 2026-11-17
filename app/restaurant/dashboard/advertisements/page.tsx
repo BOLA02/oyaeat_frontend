@@ -45,7 +45,7 @@ export default function RestaurantAdvertPage() {
   const getAuthToken = (): string | null => {
     if (typeof window === "undefined") return null;
     return (
-      localStorage.getItem("vendor_token") || localStorage.getItem("authToken")
+      sessionStorage.getItem("vendor_token") || sessionStorage.getItem("vendor_token")
     );
   };
 

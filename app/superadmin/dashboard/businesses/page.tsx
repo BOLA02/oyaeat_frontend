@@ -54,7 +54,7 @@ export default function BusinessesPage() {
 
   const { toast } = useToast();
   const token =
-    typeof window !== "undefined" ? localStorage.getItem("admin_token") : null;
+    typeof window !== "undefined" ? sessionStorage.getItem("admin_token") : null;
 
   const fetchHeaders: HeadersInit = {
     "Content-Type": "application/json",

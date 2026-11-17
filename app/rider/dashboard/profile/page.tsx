@@ -54,7 +54,7 @@ export default function RiderProfilePage() {
       const body = new FormData();
       Object.entries(f).forEach(([k, v]) => body.append(k, v));
       if (file) body.append("avatar", file);
-      const res = await fetch(`${API}/rider/profile/update`, { method: "PUT", headers: { Authorization: `Bearer ${localStorage.getItem("riderToken")}` }, body });
+      const res = await fetch(`${API}/rider/profile/update`, { method: "PUT", headers: { Authorization: `Bearer ${sessionStorage.getItem("rider_token")}` }, body });
       const json = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(json.message || "Couldn't save your profile.");
       toast.success("Profile saved");

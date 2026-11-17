@@ -78,14 +78,14 @@ export default function AddressBook() {
         <div className="flex items-center justify-between gap-3">
           <h2 className="font-display text-lg font-bold">Saved addresses</h2>
           {!adding && items && items.length < 10 && (
-            <button onClick={() => setAdding(true)} className="inline-flex h-10 items-center gap-1.5 rounded-full bg-violet-100 px-4 text-sm font-bold text-primary transition hover:bg-violet-200">
+            <button onClick={() => setAdding(true)} className="inline-flex h-10 items-center gap-1.5 rounded-full bg-mint-100 px-4 text-sm font-bold text-primary transition hover:bg-mint-200">
               <Plus className="h-4 w-4" /> Add
             </button>
           )}
         </div>
 
         {adding && (
-          <div className="mt-4 space-y-3 rounded-2xl bg-violet-50 p-4">
+          <div className="mt-4 space-y-3 rounded-2xl bg-mint-50 p-4">
             <input value={label} onChange={(e) => setLabel(e.target.value)} maxLength={40} placeholder="Label, e.g. Home or Office" aria-label="Address label" className="h-11 w-full rounded-xl border border-input bg-card px-4 text-sm outline-none focus:border-ring focus:ring-4 focus:ring-ring/15" />
             <AddressAutocomplete label={null} disabled={saving} onClear={() => setPicked(null)} onAddressSelected={(address, c) => setPicked({ address, ...c })} />
             <p className="text-xs text-muted-foreground">{picked ? `✓ ${picked.address}` : "Start typing and pick the address from the list."}</p>
@@ -111,13 +111,13 @@ export default function AddressBook() {
             <ul className="divide-y divide-border">
               {items.map((a) => (
                 <li key={a.id} className="flex items-start gap-3 py-3">
-                  <span className={cn("mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-xl", a.isDefault ? "bg-cta text-cta-foreground" : "bg-violet-100 text-violet-800")}>
+                  <span className={cn("mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-xl", a.isDefault ? "bg-cta text-cta-foreground" : "bg-mint-100 text-mint-800")}>
                     <MapPin className="h-4 w-4" />
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className="flex items-center gap-2 font-bold">
                       {a.label}
-                      {a.isDefault && <span className="rounded-full bg-violet-100 px-2 py-0.5 text-[11px] font-bold text-primary">Default</span>}
+                      {a.isDefault && <span className="rounded-full bg-mint-100 px-2 py-0.5 text-[11px] font-bold text-primary">Default</span>}
                     </p>
                     <p className="text-sm text-muted-foreground">{a.address}</p>
                   </div>
@@ -128,7 +128,7 @@ export default function AddressBook() {
                         onClick={() => act(a.id, () => api(`/customer/addresses/${a.id}`, { method: "PATCH", auth: true, body: JSON.stringify({ isDefault: true }) }), "Default address updated")}
                         aria-label={`Make ${a.label} the default address`}
                         title="Make default"
-                        className="grid h-9 w-9 place-items-center rounded-full text-muted-foreground transition hover:bg-violet-50 hover:text-primary"
+                        className="grid h-9 w-9 place-items-center rounded-full text-muted-foreground transition hover:bg-mint-50 hover:text-primary"
                       >
                         <Star className="h-4 w-4" />
                       </button>

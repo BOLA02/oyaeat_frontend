@@ -4,12 +4,13 @@ Generated from the frontend code (branch `claude/eager-pasteur-434ztx`). **Every
 
 Base URL: `NEXT_PUBLIC_API_BASE_URL` (a few older files read `NEXT_PUBLIC_API_URL`; new code reads both, base first). Default `http://localhost:5000`.
 
-## 1. Auth: one token key per role (localStorage)
+## 1. Auth: one token key per role
 
 | Role | Token key | Login endpoint | Other keys |
 |---|---|---|---|
-| Customer | `customer_token` | `POST /customer/auth/login` `{emailOrPhone,password}` | `customer_user` (JSON) |
+| Customer | `sessionStorage.customer_token` (tab-scoped) | `POST /customer/auth/login` `{emailOrPhone,password}` | `sessionStorage.customer_user` (JSON) |
 | Customer signup | same | `POST /customer/auth/register` `{firstName,lastName,email,phone,password}` | |
+| Customer Google sign-in/sign-up | same | `POST /api/v1/auth/google` `{credential: GOOGLE_ID_TOKEN}` | Google ID token must be verified server-side; response must be `{success:true,data:{token,user}}` |
 | Vendor (restaurant) | `authToken` | `POST /auth/login` | `dashboard` (JSON, has `businesses[]`, `firstName`) |
 | Vendor signup | `authToken` | `POST /auth/register` `{firstName,lastName,businessType,email,phone,password}` | `sessionStorage.partnerSignupData` (never the password) |
 | Rider | `riderToken` | `POST /auth/rider/login` `{email,password}` | |
@@ -19,6 +20,18 @@ Expected response envelope: most routes `{ success, data, message }`. **Exceptio
 
 Questions: are tokens JWTs with a role claim? Does every protected route enforce the **role** (a customer token must not work on `/vendor/*`, `/rider/*`, `/admin/*`)? What happens on expiry (frontend assumes HTTP 401)?
 
+For Google authentication, the API must only return customer sessions. It must
+not silently link an existing email/password account based on email alone;
+return a safe conflict response (the frontend treats HTTP 409 as an account
+linking conflict). Disabled or suspended customers must be rejected (the
+frontend treats HTTP 403 as unavailable). The client only accepts the OyaEat
+session returned by this route, never the Google profile as proof of login.
+
+Customer logout is `POST /customer/auth/logout` with the current customer
+bearer token and no body. Password changes use `PATCH /customer/auth/me`; when
+the request includes `currentPassword` and `newPassword`, the response may
+include `data.token`, which replaces only the current tab's token.
+
 ## 2. Endpoints the frontend calls
 
 ### Public / customer
@@ -27,7 +40,7 @@ Questions: are tokens JWTs with a role claim? Does every protected route enforce
 - `GET /public/promos/public-feed` → `data[]` `{id,title,desc,bgGradient(url or tailwind classes),businessId,business{name}}`
 - `GET /orders/my` (customer token) → `data.orders[]` `{id,status,total,createdAt,businessId,business{name},address,items[{id,menuItemId,name,price,quantity,menuItem?}],rider{firstName,lastName,phone,riderProfile{vehicleType,plateNumber}}}`
 - `POST /orders` (cash) `{businessId,customerName,customerPhone,address,notes,items[{menuItemId,quantity}],customerLatitude,customerLongitude,paymentMethod:"cash"}`
-- `POST /orders/initialize-payment` same body + `email, callbackUrl` → `data.authorization_url` (Paystack)
+- `POST /orders/initialize-payment` same body + `email, callbackUrl` → `data.authorization_url` (Paystack). `callbackUrl` is based on `NEXT_PUBLIC_APP_ORIGIN`, or the current local browser origin when unset.
 - `GET /orders/:id/track-rider` (customer token)
 
 ### Vendor (token `authToken`)

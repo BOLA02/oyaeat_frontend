@@ -11,10 +11,10 @@ export default function NearbyRestaurants({ data }: { data: Restaurant[] }) {
       className="py-16 lg:py-20 px-5 lg:px-10 max-w-[1400px] mx-auto"
     >
       <SectionHeading
-        eyebrow="Trending near you"
+        eyebrow="Illustrative preview"
         icon={<Flame className="w-3.5 h-3.5" />}
-        title="Popular restaurants"
-        subtitle="Top-rated kitchens delivering sharp sharp to your door."
+        title="Sample restaurant experience"
+        subtitle="Preview data only. Sign in to see live approved restaurants from OyaEat."
         href="/customer"
         hrefLabel="See all"
       />

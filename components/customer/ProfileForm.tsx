@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { api, type CustomerUser } from "@/lib/customer";
+import { ApiError, api, applyCustomerProfileUpdate, customerSessionSnapshot, type CustomerUser } from "@/lib/customer";
 
 const field =
   "h-11 w-full rounded-xl border border-input bg-card px-4 text-sm outline-none transition focus:border-ring focus:ring-4 focus:ring-ring/15 disabled:opacity-60";
@@ -29,11 +29,15 @@ export default function ProfileForm({ user, onSaved }: { user: CustomerUser; onS
     }
     setSaving(true);
     try {
+      const session = customerSessionSnapshot();
+      if (!session) throw new ApiError("Your session has expired. Please sign in again.", 401);
       const body: Record<string, string> = { firstName, lastName, phone };
       if (changingPassword) Object.assign(body, { currentPassword, newPassword });
       const json = await api("/customer/auth/me", { method: "PATCH", auth: true, body: JSON.stringify(body) });
       const next = { ...user, ...json.data.user };
-      localStorage.setItem("customer_user", JSON.stringify(next));
+      if (!applyCustomerProfileUpdate(session, next, json.data?.token)) {
+        throw new ApiError("Your customer session changed. Please retry the update.", 409);
+      }
       onSaved(next);
       setCurrentPassword("");
       setNewPassword("");
@@ -72,13 +76,13 @@ export default function ProfileForm({ user, onSaved }: { user: CustomerUser; onS
         <p className="rounded-xl bg-muted px-4 py-3 text-sm text-muted-foreground">{user.email} <span className="text-xs">(can&apos;t be changed)</span></p>
       </div>
 
-      <fieldset className="space-y-3 rounded-2xl bg-violet-50 p-4">
+      <fieldset className="space-y-3 rounded-2xl bg-mint-50 p-4">
         <legend className="px-1 text-sm font-bold">Change password (optional)</legend>
         <input type="password" autoComplete="current-password" placeholder="Current password" aria-label="Current password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} className={field} disabled={saving} />
         <input type="password" autoComplete="new-password" placeholder="New password (6+ characters)" aria-label="New password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className={field} disabled={saving} />
       </fieldset>
 
-      <button type="submit" disabled={saving} className="flex h-11 items-center gap-2 rounded-full bg-primary px-6 text-sm font-bold text-primary-foreground transition hover:bg-violet-800 disabled:opacity-60">
+      <button type="submit" disabled={saving} className="flex h-11 items-center gap-2 rounded-full bg-primary px-6 text-sm font-bold text-primary-foreground transition hover:bg-mint-800 disabled:opacity-60">
         {saving && <Loader2 className="h-4 w-4 animate-spin" />} Save changes
       </button>
     </form>

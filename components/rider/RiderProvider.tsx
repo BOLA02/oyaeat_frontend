@@ -40,7 +40,7 @@ export const useRider = () => {
   return c;
 };
 
-const token = () => (typeof window === "undefined" ? null : localStorage.getItem("riderToken"));
+const token = () => (typeof window === "undefined" ? null : sessionStorage.getItem("rider_token"));
 const cleanId = (id: string | number) => String(id).replace(/^ORD-/, "");
 
 function alertUser() {
@@ -78,7 +78,7 @@ export function RiderProvider({ children }: { children: React.ReactNode }) {
   const restricted = !!data && status !== "active";
 
   const logoutExpired = useCallback(() => {
-    localStorage.removeItem("riderToken");
+    sessionStorage.removeItem("rider_token");
     router.replace("/rider/login");
   }, [router]);
 

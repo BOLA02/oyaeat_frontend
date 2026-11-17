@@ -110,7 +110,7 @@ export default function OrderDetailView() {
   const back = (
     <button
       onClick={() => (window.history.length > 1 ? router.back() : router.push("/customer/dashboard/orders"))}
-      className="mb-4 inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-bold text-primary transition hover:bg-violet-50"
+      className="mb-4 inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-bold text-primary transition hover:bg-mint-50"
     >
       <ArrowLeft className="h-4 w-4" /> Orders
     </button>
@@ -179,14 +179,14 @@ export default function OrderDetailView() {
               return (
                 <li key={s.id} className="relative flex flex-col items-center text-center" aria-current={current ? "step" : undefined}>
                   {i > 0 && (
-                    <span className={cn("absolute right-1/2 top-5 h-1 w-full -translate-y-1/2 rounded-full", i <= step ? "bg-primary" : "bg-violet-100")} aria-hidden />
+                    <span className={cn("absolute right-1/2 top-5 h-1 w-full -translate-y-1/2 rounded-full", i <= step ? "bg-primary" : "bg-mint-100")} aria-hidden />
                   )}
                   <span
                     className={cn(
                       "relative z-10 grid h-10 w-10 place-items-center rounded-full border-2 transition",
                       done && "border-primary bg-primary text-primary-foreground",
                       current && "border-cta bg-cta text-cta-foreground shadow-pop",
-                      !done && !current && "border-violet-100 bg-card text-violet-300",
+                      !done && !current && "border-mint-100 bg-card text-mint-300",
                     )}
                   >
                     {done ? <Check className="h-5 w-5" /> : <Icon className="h-5 w-5" />}
@@ -222,7 +222,7 @@ export default function OrderDetailView() {
             )}
           </div>
           {order.rider.phone && (
-            <a href={`tel:${order.rider.phone}`} aria-label="Call rider" className="grid h-12 w-12 place-items-center rounded-full bg-primary text-primary-foreground transition hover:bg-violet-800">
+            <a href={`tel:${order.rider.phone}`} aria-label="Call rider" className="grid h-12 w-12 place-items-center rounded-full bg-primary text-primary-foreground transition hover:bg-mint-800">
               <Phone className="h-5 w-5" />
             </a>
           )}
@@ -287,7 +287,7 @@ export default function OrderDetailView() {
                     placeholder="Anything to add? (optional)"
                     className="mt-3 w-full rounded-xl border border-input bg-card p-3 text-sm outline-none focus:border-ring focus:ring-4 focus:ring-ring/15"
                   />
-                  <button onClick={sendReview} disabled={sendingReview} className="mt-3 flex h-11 items-center gap-2 rounded-full bg-primary px-6 text-sm font-bold text-primary-foreground transition hover:bg-violet-800 disabled:opacity-60">
+                  <button onClick={sendReview} disabled={sendingReview} className="mt-3 flex h-11 items-center gap-2 rounded-full bg-primary px-6 text-sm font-bold text-primary-foreground transition hover:bg-mint-800 disabled:opacity-60">
                     {sendingReview && <Loader2 className="h-4 w-4 animate-spin" />} Submit review
                   </button>
                 </>
@@ -318,7 +318,7 @@ export default function OrderDetailView() {
           </div>
         </div>
         {order.address && (
-          <p className="mt-4 rounded-2xl bg-violet-50 p-3 text-sm text-violet-900"><b>Delivering to:</b> {order.address}</p>
+          <p className="mt-4 rounded-2xl bg-mint-100 p-3 text-sm text-mint-900"><b>Delivering to:</b> {order.address}</p>
         )}
       </section>
 
@@ -331,7 +331,7 @@ export default function OrderDetailView() {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <button onClick={() => setCancelOpen(false)} disabled={cancelling} className="h-11 rounded-full border border-border px-5 text-sm font-bold hover:bg-violet-50">Keep order</button>
+            <button onClick={() => setCancelOpen(false)} disabled={cancelling} className="h-11 rounded-full border border-border px-5 text-sm font-bold hover:bg-mint-50">Keep order</button>
             <button onClick={cancel} disabled={cancelling} className="flex h-11 items-center gap-2 rounded-full bg-destructive px-5 text-sm font-bold text-white hover:bg-destructive/90 disabled:opacity-60">
               {cancelling && <Loader2 className="h-4 w-4 animate-spin" />} Cancel order
             </button>

@@ -59,14 +59,15 @@ export default function PartnerForm() {
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.message || "We couldn't create your account. Please try again.");
 
-      const token = data.token || data.authToken || data.data?.token || data.user?.token;
-      if (token) localStorage.setItem("authToken", token);
-
       // Never keep the password: later steps only need these fields.
       const { password: _omit, ...safe } = f;
       sessionStorage.setItem(
         "partnerSignupData",
-        JSON.stringify({ ...safe, userId: data.userId || data.id || data.user?.id || data.data?.userId }),
+        JSON.stringify({
+          ...safe,
+          userId: data.userId || data.data?.userId,
+          challengeId: data.verification?.challengeId || data.challengeId,
+        }),
       );
       router.push("/partner-signup/verify-phone");
     } catch (err) {
@@ -107,7 +108,7 @@ export default function PartnerForm() {
         <input id="email" type="email" autoComplete="email" value={f.email} onChange={set("email")} placeholder="you@business.com" className={fieldClass} aria-invalid={!!errors.email} disabled={loading} />
       </Field>
 
-      <Field id="phone" label="Phone number" hint="We'll text you a verification code." error={errors.phone}>
+      <Field id="phone" label="Phone number" hint="Used for business contact; verification is sent by email." error={errors.phone}>
         <input id="phone" type="tel" inputMode="tel" autoComplete="tel" value={f.phone} onChange={set("phone")} placeholder="0803 000 0000" className={fieldClass} aria-invalid={!!errors.phone} disabled={loading} />
       </Field>
 

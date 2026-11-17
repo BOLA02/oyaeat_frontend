@@ -16,7 +16,7 @@ import AddressAutocomplete from "@/components/AddressAutocomplete";
 import { EmptyState, PageHeader } from "./ui";
 import { OrderSummary } from "./CartView";
 import { useCart } from "@/hooks/useCart";
-import { api, getToken, getUser, naira, type CustomerUser } from "@/lib/customer";
+import { api, customerPaymentCallbackUrl, getCustomerId, getToken, getUser, naira, savePendingPayment, type CustomerUser } from "@/lib/customer";
 import { cn } from "@/lib/utils";
 
 type Method = "card" | "transfer" | "cash";
@@ -128,13 +128,18 @@ export default function CheckoutView() {
           body: JSON.stringify({
             ...order,
             email: user?.email || "",
-            callbackUrl: window.location.origin + "/customer/dashboard/orders",
+            callbackUrl: customerPaymentCallbackUrl(window.location.origin),
           }),
         });
         const url = json.data?.authorization_url;
         if (!url) throw new Error("We couldn't start the payment. Please try again.");
         // Keep the cart until payment is confirmed (orders page clears it).
-        sessionStorage.setItem("oyaeat_pending_payment", "1");
+        const customerId = getCustomerId(getUser());
+        if (!customerId) throw new Error("Your session has expired. Please sign in again.");
+        const reference = json.data?.reference || json.data?.paymentReference;
+        const orderId = json.data?.order?.id || json.data?.orderId;
+        if (!reference || !orderId) throw new Error("The payment session was incomplete. Your cart has been kept.");
+        savePendingPayment({ customerId, orderId: String(orderId), reference: String(reference) });
         window.location.href = url;
         return;
       }
@@ -197,7 +202,7 @@ export default function CheckoutView() {
                             }}
                             className={cn(
                               "max-w-full truncate rounded-full border px-4 py-2 text-sm font-semibold transition",
-                              on ? "border-primary bg-violet-100 text-primary" : "border-border bg-card hover:bg-violet-50",
+                              on ? "border-primary bg-mint-100 text-primary" : "border-border bg-card hover:bg-mint-50",
                             )}
                           >
                             {a.label}
@@ -256,10 +261,10 @@ export default function CheckoutView() {
                       onClick={() => setMethod(m.id)}
                       className={cn(
                         "flex items-center gap-4 rounded-2xl border-2 p-4 text-left transition",
-                        on ? "border-primary bg-violet-50" : "border-border hover:border-violet-300",
+                        on ? "border-primary bg-mint-50" : "border-border hover:border-mint-300",
                       )}
                     >
-                      <span className={cn("grid h-11 w-11 place-items-center rounded-xl", on ? "bg-primary text-primary-foreground" : "bg-violet-50 text-violet-800")}>
+                      <span className={cn("grid h-11 w-11 place-items-center rounded-xl", on ? "bg-primary text-primary-foreground" : "bg-mint-50 text-mint-800")}>
                         <m.icon className="h-5 w-5" />
                       </span>
                       <span className="flex-1">
@@ -321,7 +326,7 @@ function StepTitle({ n, icon: Icon, children }: { n: number; icon: React.Element
     <h2 className="font-display mb-5 flex items-center gap-3 text-lg font-bold">
       <span className="grid h-8 w-8 place-items-center rounded-full bg-primary text-sm font-extrabold text-primary-foreground">{n}</span>
       {children}
-      <Icon className="ml-auto h-5 w-5 text-violet-300" />
+      <Icon className="ml-auto h-5 w-5 text-mint-300" />
     </h2>
   );
 }

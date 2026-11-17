@@ -44,7 +44,7 @@ export default function SettingsPage() {
     const loadInitialConfigurations = async () => {
       try {
         const token =
-          localStorage.getItem("admin_token");
+          sessionStorage.getItem("admin_token");
         const res = await fetch(`${API_BASE_URL}/admin/settings`, {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -87,7 +87,7 @@ export default function SettingsPage() {
     setSaving(true);
     try {
       const token =
-        localStorage.getItem("admin_token");
+        sessionStorage.getItem("admin_token");
 
       // 🌟 FIX: Fetch using 'PATCH' to perfectly align with your backend router config!
       const res = await fetch(`${API_BASE_URL}/admin/settings`, {

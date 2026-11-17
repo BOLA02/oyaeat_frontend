@@ -102,7 +102,7 @@ export default function RestaurantOrdersPage() {
       try {
         await vendorApi.updateOrderStatus(id, to);
         if (to === "ready") {
-          const token = localStorage.getItem("authToken") || localStorage.getItem("vendorToken");
+          const token = sessionStorage.getItem("vendor_token") || sessionStorage.getItem("vendor_token");
           const r = await fetch(`${API}/orders/${id}/dispatch`, {
             method: "POST",
             headers: { Authorization: `Bearer ${token || ""}`, "Content-Type": "application/json" },

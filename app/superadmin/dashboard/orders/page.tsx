@@ -26,7 +26,7 @@ export default function SuperadminOrdersPage() {
   const [hasNextPage, setHasNextPage] = useState(false);
 
   const adminToken =
-    typeof window !== "undefined" ? localStorage.getItem("admin_token") : null;
+    typeof window !== "undefined" ? sessionStorage.getItem("admin_token") : null;
 
   const fetchOrders = async () => {
     setLoading(true);

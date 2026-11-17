@@ -15,7 +15,7 @@ const PERKS = [
 
 const STEPS = [
   ["Create your account", "Tell us who you are."],
-  ["Verify your phone", "A quick code to confirm it's you."],
+  ["Verify your email", "Enter the secure code sent to your inbox."],
   ["Add your business", "Name, location and what you serve."],
   ["Upload your documents", "We review them, then you go live."],
 ];

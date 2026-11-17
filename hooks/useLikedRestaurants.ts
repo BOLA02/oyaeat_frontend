@@ -1,10 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { API_URL, getToken } from "@/lib/customer";
+import { API_URL, CUSTOMER_SESSION_EVENT, getCustomerId, getToken, getUser } from "@/lib/customer";
 
-const KEY = "liked_restaurants";
 const EVENT = "oyaeat:likes";
+
+const activeKey = () => {
+  const customerId = getCustomerId(getUser());
+  return customerId ? `liked_restaurants:customer:${encodeURIComponent(customerId)}` : "liked_restaurants:guest";
+};
 
 // Quiet request: an expired token must not bounce someone who is just browsing to the login page.
 async function favApi(path: string, method = "GET") {
@@ -19,7 +23,7 @@ async function favApi(path: string, method = "GET") {
 
 const readLocal = (): any[] => {
   try {
-    const raw = localStorage.getItem(KEY);
+    const raw = localStorage.getItem(activeKey());
     const parsed = raw ? JSON.parse(raw) : [];
     return Array.isArray(parsed) ? parsed : [];
   } catch {
@@ -29,7 +33,7 @@ const readLocal = (): any[] => {
 
 const writeLocal = (items: any[]) => {
   try {
-    localStorage.setItem(KEY, JSON.stringify(items));
+    localStorage.setItem(activeKey(), JSON.stringify(items));
   } catch {}
   window.dispatchEvent(new Event(EVENT));
 };
@@ -47,19 +51,25 @@ export function useLikedRestaurants() {
     sync();
     window.addEventListener(EVENT, sync);
     window.addEventListener("storage", sync);
+    window.addEventListener(CUSTOMER_SESSION_EVENT, sync);
 
     if (getToken()) {
       (async () => {
         try {
+          const token = getToken();
+          const key = activeKey();
           const local = readLocal();
           const server = (await favApi("/customer/favorites")).data?.favorites || [];
+          if (token !== getToken() || key !== activeKey()) return;
           const serverIds = new Set(server.map((r: any) => r.id));
           // upload anything saved locally that the account doesn't have yet
           const missing = local.filter((r) => !serverIds.has(r.id));
           await Promise.allSettled(
             missing.map((r) => favApi(`/customer/favorites/${r.id}`, "PUT")),
           );
-          writeLocal([...server, ...missing.filter((r) => r.id)]);
+          if (token === getToken() && key === activeKey()) {
+            writeLocal([...server, ...missing.filter((r) => r.id)]);
+          }
         } catch {
           // offline or signed out: keep the local copy
         }
@@ -69,10 +79,13 @@ export function useLikedRestaurants() {
     return () => {
       window.removeEventListener(EVENT, sync);
       window.removeEventListener("storage", sync);
+      window.removeEventListener(CUSTOMER_SESSION_EVENT, sync);
     };
   }, []);
 
   const toggle = useCallback((restaurant: any) => {
+    const key = activeKey();
+    const token = getToken();
     const current = readLocal();
     const has = current.some((r) => r.id === restaurant.id);
     writeLocal(has ? current.filter((r) => r.id !== restaurant.id) : [...current, restaurant]);
@@ -80,7 +93,9 @@ export function useLikedRestaurants() {
     if (getToken()) {
       favApi(`/customer/favorites/${restaurant.id}`, has ? "DELETE" : "PUT").catch(() => {
         // roll back the optimistic change if the server refused it
-        writeLocal(readLocal().filter((r) => r.id !== restaurant.id).concat(has ? [restaurant] : []));
+        if (key === activeKey() && token === getToken()) {
+          writeLocal(readLocal().filter((r) => r.id !== restaurant.id).concat(has ? [restaurant] : []));
+        }
       });
     }
   }, []);

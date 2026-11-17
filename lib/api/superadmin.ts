@@ -46,7 +46,7 @@ function getApiBaseUrl() {
 }
 
 function getTokenOrThrow() {
-  const token = localStorage.getItem("admin_token"); // matches your login
+  const token = sessionStorage.getItem("admin_token"); // matches your login
   if (!token) throw new Error("Admin not logged in. Please login again.");
   return token;
 }

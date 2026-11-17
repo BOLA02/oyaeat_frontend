@@ -6,15 +6,17 @@ import { Loader2, ShieldCheck } from "lucide-react";
 import FlowShell from "@/components/partner-signup/FlowShell";
 import { FormError, PrimaryButton } from "@/components/partner-signup/ui";
 import { cn } from "@/lib/utils";
+import { saveRoleSession } from "@/lib/roleSession";
 
 const API = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
 const LEN = 6;
 const COOLDOWN = 30;
 
-export default function VerifyPhonePage() {
+export default function VerifyEmailPage() {
   const router = useRouter();
-  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [userId, setUserId] = useState("");
+  const [challengeId, setChallengeId] = useState("");
   const [code, setCode] = useState<string[]>(Array(LEN).fill(""));
   const [verifying, setVerifying] = useState(false);
   const [error, setError] = useState("");
@@ -29,8 +31,9 @@ export default function VerifyPhonePage() {
       const raw = sessionStorage.getItem("partnerSignupData");
       if (raw) {
         const d = JSON.parse(raw);
-        setPhone(d.phone || "");
+        setEmail(d.email || "");
         setUserId(d.userId || "");
+        setChallengeId(d.challengeId || "");
       }
     } catch {}
     setReady(true);
@@ -45,20 +48,21 @@ export default function VerifyPhonePage() {
   }, [wait]);
 
   const resend = async () => {
-    if (wait > 0 || resending || !userId) return;
+    if (wait > 0 || resending || !challengeId) return;
     setResending(true);
     setError("");
     setNotice("");
     try {
-      const res = await fetch(`${API}/auth/resend-otp`, {
+      const res = await fetch(`${API}/auth/resend-email-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId }),
+        body: JSON.stringify({ challengeId }),
       });
       const data = await res.json().catch(() => ({}));
       if (res.status === 429) setWait(Number(data.retryAfter) || COOLDOWN);
       if (!res.ok) throw new Error(data.message || "Couldn't send a new code.");
-      setNotice(`A new code was sent to ${phone || "your phone"}.`);
+      if (data.verification?.challengeId) setChallengeId(data.verification.challengeId);
+      setNotice(`A new code was sent to ${email || "your email"}.`);
       setCode(Array(LEN).fill(""));
       refs.current[0]?.focus();
       setWait(COOLDOWN);
@@ -98,14 +102,14 @@ export default function VerifyPhonePage() {
     setVerifying(true);
     setError("");
     try {
-      const res = await fetch(`${API}/auth/verify-phone`, {
+      const res = await fetch(`${API}/auth/verify-email`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, otp: code.join("") }),
+        body: JSON.stringify({ challengeId, code: code.join(""), otp: code.join("") }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.message || "That code is invalid or has expired.");
-      if (data.token) localStorage.setItem("authToken", data.token);
+      if (data.token) saveRoleSession("vendor", data.token);
       router.push("/partner-signup/welcome");
     } catch (err) {
       setError(err instanceof TypeError ? "We couldn't reach OyaEat. Check your connection and try again." : err instanceof Error ? err.message : "Verification failed.");
@@ -118,7 +122,7 @@ export default function VerifyPhonePage() {
   // No session data means they skipped the signup step.
   if (ready && !userId) {
     return (
-      <FlowShell step={2} title="Let's start with your account" subtitle="We couldn't find your sign-up details, so we can't verify a phone number yet.">
+      <FlowShell step={2} title="Let's start with your account" subtitle="We couldn't find your sign-up details, so we can't verify your email yet.">
         <PrimaryButton onClick={() => router.push("/partner-signup")} className="w-full sm:w-auto">Go to sign up</PrimaryButton>
       </FlowShell>
     );
@@ -128,8 +132,8 @@ export default function VerifyPhonePage() {
     <FlowShell
       step={2}
       eyebrow="Step 2 of 4"
-      title="Verify your phone number"
-      subtitle={phone ? `Enter the 6-digit code we sent to ${phone}.` : "Enter the 6-digit code we sent to your phone."}
+      title="Verify your email address"
+      subtitle={email ? `Enter the 6-digit code we sent to ${email}.` : "Enter the 6-digit code we sent to your email."}
     >
       <div className="space-y-5">
         <FormError>{error}</FormError>

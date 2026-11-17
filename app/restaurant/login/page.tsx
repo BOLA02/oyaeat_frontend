@@ -172,13 +172,13 @@ export default function LoginPage() {
 
       if (data?.token) {
         try {
-          localStorage.setItem("authToken", data.token);
+          sessionStorage.setItem("vendor_token", data.token);
         } catch {}
       }
 
       if (data?.dashboard) {
         try {
-          localStorage.setItem("dashboard", JSON.stringify(data.dashboard));
+          sessionStorage.setItem("vendor_dashboard", JSON.stringify(data.dashboard));
         } catch {}
       }
 

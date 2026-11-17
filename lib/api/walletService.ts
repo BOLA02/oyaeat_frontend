@@ -6,7 +6,7 @@ const getAuthHeaders = (
   tokenKey: "authToken" | "riderToken" | "admin_token" = "authToken",
 ) => ({
   "Content-Type": "application/json",
-  Authorization: `Bearer ${localStorage.getItem(tokenKey)}`,
+  Authorization: `Bearer ${sessionStorage.getItem(tokenKey === "authToken" ? "vendor_token" : tokenKey === "riderToken" ? "rider_token" : "admin_token")}`,
 });
 
 // Superadmin requests use the admin token only, and send an expired or missing session back to the login page.
@@ -19,8 +19,8 @@ async function adminRequest(path: string, init: RequestInit, fallback: string) {
   }
   const data = await res.json().catch(() => ({}));
   if (res.status === 401) {
-    localStorage.removeItem("admin_token");
-    localStorage.removeItem("admin_user");
+    sessionStorage.removeItem("admin_token");
+    sessionStorage.removeItem("admin_user");
     if (typeof window !== "undefined") window.location.href = "/superadmin/login";
     throw new Error("Your admin session has expired. Please log in again.");
   }
@@ -131,33 +131,22 @@ export const walletApi = {
     amount: number,
     roleType: "authToken" | "riderToken",
   ) => {
+    const idempotencyStorageKey = `payout-idempotency:${roleType}:${amount}`;
+    const idempotencyKey = sessionStorage.getItem(idempotencyStorageKey) || crypto.randomUUID();
+    sessionStorage.setItem(idempotencyStorageKey, idempotencyKey);
     const res = await fetch(`${API_BASE_URL}/api/wallet/request-payout`, {
       method: "POST",
-      headers: getAuthHeaders(roleType),
+      headers: { ...getAuthHeaders(roleType), "Idempotency-Key": idempotencyKey },
       body: JSON.stringify({ amount }),
     });
     const data = await res.json();
     if (!res.ok)
       throw new Error(data.message || "Withdrawal request rejected by engine");
+    sessionStorage.removeItem(idempotencyStorageKey);
     return data;
   },
 
   // ── FOR SUPER-ADMINS ONLY ──
-  // Link manual bank accounts extracted from secure support emails
-  linkBankFromEmail: async (formData: {
-    userEmail: string;
-    userType: string;
-    bankName: string;
-    accountNumber: string;
-    accountName: string;
-  }) => {
-    return adminRequest(
-      "/api/wallet/admin/onboard-bank",
-      { method: "POST", body: JSON.stringify(formData) },
-      "Failed to commit manual banking binding row",
-    );
-  },
-
   // Mark a pending withdrawal row as paid after completing a real wire transfer
   confirmPayoutCompleted: async (transactionId: string) => {
     return adminRequest(
