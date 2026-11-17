@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { CheckCircle2, Eye, EyeOff, Loader2 } from "lucide-react";
 import RiderAuthShell from "@/components/rider/RiderAuthShell";
 import { Field, FormError, PrimaryButton, fieldClass } from "@/components/partner-signup/ui";
+import { saveRoleSession } from "@/lib/roleSession";
 
 const API = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
 
@@ -27,7 +28,7 @@ function LoginForm() {
       const res = await fetch(`${API}/auth/rider/login`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, password }) });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.message || "Login failed. Check your details and try again.");
-      localStorage.setItem("riderToken", data.token);
+      saveRoleSession("rider", data.token, data.dashboard);
       router.push("/rider/dashboard");
     } catch (err) {
       setError(err instanceof TypeError ? "We couldn't reach OyaEat. Check your connection and try again." : err instanceof Error ? err.message : "Something went wrong.");

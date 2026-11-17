@@ -38,7 +38,7 @@ export default function RiderHome() {
         <p className="mt-2 text-muted-foreground">{RESTRICTED[status] || "Your account can't take orders right now."}</p>
         <button
           onClick={() => {
-            localStorage.removeItem("riderToken");
+            sessionStorage.removeItem("rider_token");
             router.replace("/rider/login");
           }}
           className="mt-6 h-12 rounded-full border border-border px-6 text-sm font-bold transition hover:bg-violet-50"

@@ -176,20 +176,20 @@ const Footer = () => {
             </h4>
             <ul className="space-y-3 text-sm text-white/80 font-medium">
               <li>
-                <Link
-                  href="/support"
+                <a
+                  href="mailto:info@oyaeat.com?subject=OyaEat%20support"
                   className="hover:text-white transition-colors duration-150"
                 >
                   Contact Support
-                </Link>
+                </a>
               </li>
               <li>
-                <Link
-                  href="/faq"
+                <a
+                  href="mailto:info@oyaeat.com?subject=OyaEat%20question"
                   className="hover:text-white transition-colors duration-150"
                 >
-                  FAQs
-                </Link>
+                  Ask a question
+                </a>
               </li>
               <li>
                 <a
@@ -206,26 +206,7 @@ const Footer = () => {
         {/* Bottom bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/60 font-medium">
           <span>© {new Date().getFullYear()} OyaEat. All rights reserved.</span>
-          <div className="flex items-center gap-5">
-            <Link
-              href="/privacy"
-              className="hover:text-white/70 transition-colors duration-150"
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              href="/terms"
-              className="hover:text-white/70 transition-colors duration-150"
-            >
-              Terms of Service
-            </Link>
-            <Link
-              href="/cookies"
-              className="hover:text-white/70 transition-colors duration-150"
-            >
-              Cookies
-            </Link>
-          </div>
+          <span>Legal policies will be linked here after approved text is published.</span>
         </div>
       </div>
     </footer>

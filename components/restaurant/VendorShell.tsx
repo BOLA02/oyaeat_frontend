@@ -103,13 +103,13 @@ export default function VendorShell({ children }: { children: React.ReactNode })
 
   // auth guard + identity
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
+    const token = sessionStorage.getItem("vendor_token");
     if (!token) {
       router.replace("/restaurant/login");
       return;
     }
     try {
-      const raw = localStorage.getItem("dashboard");
+      const raw = sessionStorage.getItem("vendor_dashboard");
       if (raw) setDashboard(JSON.parse(raw));
     } catch {}
     setReady(true);
@@ -123,7 +123,7 @@ export default function VendorShell({ children }: { children: React.ReactNode })
   // business logo
   useEffect(() => {
     const id = dashboard?.businesses?.[0]?.id;
-    const token = typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
+    const token = typeof window !== "undefined" ? sessionStorage.getItem("vendor_token") : null;
     if (!id || !token) return;
     fetch(`${API}/vendor/business/${id}/settings`, { headers: { Authorization: `Bearer ${token}` } })
       .then((r) => (r.ok ? r.json() : null))
@@ -148,7 +148,7 @@ export default function VendorShell({ children }: { children: React.ReactNode })
           localStorage.setItem("vendor_last_seen_order_id", String(maxId));
           return;
         }
-        let lastSeen = parseInt(stored, 10) || 0;
+        const lastSeen = parseInt(stored, 10) || 0;
         let highest = lastSeen;
         let fresh = 0;
         orders.forEach((o) => {

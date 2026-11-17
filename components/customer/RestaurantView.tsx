@@ -112,13 +112,13 @@ export default function RestaurantView() {
   return (
     <div className="-mt-5 sm:-mt-7">
       {/* Cover */}
-      <div className="relative -mx-4 h-52 overflow-hidden bg-violet-900 sm:h-64 lg:mx-0 lg:mt-7 lg:rounded-3xl">
+      <div className="relative -mx-4 h-52 overflow-hidden bg-mint-900 sm:h-64 lg:mx-0 lg:mt-7 lg:rounded-3xl">
         <RestaurantImage
           src={restaurantImage(restaurant) || resolveImg(restaurant.profilePicUrl)}
           alt={restaurant.name}
           className="h-full w-full opacity-80"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-violet-950/85 via-violet-950/20 to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-mint-900/85 via-mint-900/20 to-black/20" />
         <div className="absolute inset-x-4 top-4 flex justify-between">
           <button
             onClick={() => (window.history.length > 1 ? router.back() : router.push("/customer"))}
@@ -177,7 +177,7 @@ export default function RestaurantView() {
                   "h-9 shrink-0 rounded-full px-4 text-sm font-bold transition",
                   category === c
                     ? "bg-primary text-primary-foreground"
-                    : "bg-violet-50 text-violet-900 hover:bg-violet-100",
+                    : "bg-mint-100 text-mint-900 hover:bg-mint-200",
                 )}
               >
                 {c}
@@ -221,7 +221,7 @@ export default function RestaurantView() {
                     </p>
                   </div>
                   <div className="relative h-28 w-28 shrink-0 sm:h-32 sm:w-32">
-                    <div className="h-full w-full overflow-hidden rounded-2xl bg-violet-50">
+                    <div className="h-full w-full overflow-hidden rounded-2xl bg-mint-50">
                       <RestaurantImage
                         src={resolveImg(item.imageUrl)}
                         alt={item.name}
@@ -267,7 +267,7 @@ export default function RestaurantView() {
         <div className="fixed inset-x-0 bottom-[4.75rem] z-30 px-4 md:bottom-6">
           <Link
             href="/customer/cart"
-            className="mx-auto flex max-w-xl items-center justify-between rounded-full bg-primary p-2 pl-5 text-primary-foreground shadow-pop transition hover:bg-violet-800"
+            className="mx-auto flex max-w-xl items-center justify-between rounded-full bg-primary p-2 pl-5 text-primary-foreground shadow-pop transition hover:bg-mint-800"
           >
             <span className="flex items-center gap-3 text-sm font-bold">
               <span className="grid h-7 min-w-7 place-items-center rounded-full bg-cta px-1.5 text-xs font-extrabold text-cta-foreground">

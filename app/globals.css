@@ -3,73 +3,69 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* ------------------------------------------------------------------
-   OyaEat design tokens: violet (structure, trust) + mango (appetite, action).
-   Violet carries navigation, headings, primary buttons and selected states.
-   Mango is reserved for the single most important action on a screen,
-   highlights, ratings and promos. Green is ONLY for success status.
-------------------------------------------------------------------- */
+/* OyaEat customer design language: fresh greens for trust and progress,
+   warm orange only where an order moves forward. */
 :root {
-  --background: #fbf9ff;
-  --foreground: #1a1033;
+  --background: #f5f8f5;
+  --foreground: #14251d;
   --card: #ffffff;
-  --card-foreground: #1a1033;
+  --card-foreground: #14251d;
   --popover: #ffffff;
-  --popover-foreground: #1a1033;
-  --primary: #5b21b6;
+  --popover-foreground: #14251d;
+  --primary: #087a4b;
   --primary-foreground: #ffffff;
-  --secondary: #f1ebff;
-  --secondary-foreground: #3b0f7a;
-  --muted: #f3f0fa;
-  --muted-foreground: #6b6480;
-  --accent: #f1ebff;
-  --accent-foreground: #3b0f7a;
-  --cta: #fdba2d;
-  --cta-foreground: #1a1033;
+  --secondary: #e6f3ec;
+  --secondary-foreground: #064e35;
+  --muted: #eef3ef;
+  --muted-foreground: #77827c;
+  --accent: #ddf5e7;
+  --accent-foreground: #064e35;
+  --cta: #ff6900;
+  --cta-foreground: #ffffff;
   --destructive: #c8372d;
   --destructive-foreground: #ffffff;
   --success: #15803d;
   --success-soft: #dcfce7;
   --warning: #b45309;
   --warning-soft: #fff4d6;
-  --border: #e6e0f3;
-  --input: #d9d0ee;
-  --ring: #7c3aed;
-  --chart-1: #5b21b6;
-  --chart-2: #fdba2d;
-  --chart-3: #8b5cf6;
-  --chart-4: #f59e0b;
-  --chart-5: #c4b5fd;
-  --radius: 0.75rem;
-  --sidebar: #2a1156;
-  --sidebar-foreground: #f1ebff;
-  --sidebar-primary: #fdba2d;
-  --sidebar-primary-foreground: #1a1033;
-  --sidebar-accent: #4c1d95;
+  --border: #e6ece8;
+  --input: #d7e5dc;
+  --ring: #168b57;
+  --chart-1: #087a4b;
+  --chart-2: #ff6900;
+  --chart-3: #168b57;
+  --chart-4: #f5a00b;
+  --chart-5: #b7dbc5;
+  --radius: 1rem;
+  --sidebar: #064e35;
+  --sidebar-foreground: #f5f8f5;
+  --sidebar-primary: #ff6900;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #063d2c;
   --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #3b1a78;
-  --sidebar-ring: #fdba2d;
-  --oya-shadow-card: 0 1px 2px rgba(26, 16, 51, 0.05), 0 8px 24px rgba(26, 16, 51, 0.07);
-  --oya-shadow-pop: 0 14px 36px rgba(26, 16, 51, 0.18);
+  --sidebar-border: #0b6546;
+  --sidebar-ring: #ff6900;
+  --oya-shadow-card: 0 1px 2px rgba(20, 37, 29, 0.04), 0 8px 24px rgba(20, 37, 29, 0.06);
+  --oya-shadow-pop: 0 14px 36px rgba(6, 78, 53, 0.16);
 }
 
 .dark {
-  --background: #12091f;
-  --foreground: #f4efff;
-  --card: #1c1030;
-  --card-foreground: #f4efff;
-  --popover: #1c1030;
-  --popover-foreground: #f4efff;
-  --primary: #a78bfa;
-  --primary-foreground: #1a1033;
-  --secondary: #2a1a4a;
-  --secondary-foreground: #f1ebff;
-  --muted: #251a3f;
-  --muted-foreground: #a99fc4;
-  --accent: #2a1a4a;
-  --accent-foreground: #f1ebff;
-  --cta: #fdba2d;
-  --cta-foreground: #1a1033;
+  --background: #062d20;
+  --foreground: #f4fbf6;
+  --card: #093a2a;
+  --card-foreground: #f4fbf6;
+  --popover: #093a2a;
+  --popover-foreground: #f4fbf6;
+  --primary: #74b98d;
+  --primary-foreground: #063d2c;
+  --secondary: #124a36;
+  --secondary-foreground: #e6f3ec;
+  --muted: #103d2d;
+  --muted-foreground: #a6bbb0;
+  --accent: #124a36;
+  --accent-foreground: #e6f3ec;
+  --cta: #ff6900;
+  --cta-foreground: #ffffff;
   --destructive: #ef6a5f;
   --destructive-foreground: #1a1033;
   --success: #4ade80;
@@ -78,20 +74,20 @@
   --warning-soft: #3a2a08;
   --border: #33254f;
   --input: #3d2d5e;
-  --ring: #a78bfa;
-  --chart-1: #a78bfa;
-  --chart-2: #fdba2d;
-  --chart-3: #8b5cf6;
-  --chart-4: #f59e0b;
-  --chart-5: #c4b5fd;
-  --sidebar: #0f0720;
-  --sidebar-foreground: #f1ebff;
-  --sidebar-primary: #fdba2d;
-  --sidebar-primary-foreground: #1a1033;
-  --sidebar-accent: #2a1a4a;
+  --ring: #74b98d;
+  --chart-1: #74b98d;
+  --chart-2: #ff6900;
+  --chart-3: #168b57;
+  --chart-4: #f5a00b;
+  --chart-5: #b7dbc5;
+  --sidebar: #052419;
+  --sidebar-foreground: #e6f3ec;
+  --sidebar-primary: #ff6900;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #124a36;
   --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #2a1a4a;
-  --sidebar-ring: #fdba2d;
+  --sidebar-border: #124a36;
+  --sidebar-ring: #ff6900;
 }
 
 @theme inline {
@@ -103,17 +99,39 @@
   --color-success-soft: var(--success-soft);
   --color-warning: var(--warning);
   --color-warning-soft: var(--warning-soft);
-  --color-mango-50: #fffbef;
-  --color-mango-100: #fff4d6;
-  --color-mango-200: #ffe5a0;
-  --color-mango-300: #ffd166;
-  --color-mango-400: #fdba2d;
-  --color-mango-500: #f5a00b;
-  --color-mango-600: #d97f06;
-  --color-mango-700: #b45f06;
-  --color-mango-800: #8a4709;
-  --color-mango-900: #6b3a0b;
-  --color-cream: #fff4d6;
+  --color-mango-50: #fff4ed;
+  --color-mango-100: #ffeadb;
+  --color-mango-200: #ffc9a6;
+  --color-mango-300: #ff9a59;
+  --color-mango-400: #ff6900;
+  --color-mango-500: #e95e00;
+  --color-mango-600: #c74b00;
+  --color-mango-700: #a43c00;
+  --color-mango-800: #823000;
+  --color-mango-900: #642600;
+  --color-cream: #fff4ed;
+  --color-mint-50: #f5f8f5;
+  --color-mint-100: #e6f3ec;
+  --color-mint-200: #ddf5e7;
+  --color-mint-300: #b7dbc5;
+  --color-mint-400: #74b98d;
+  --color-mint-600: #168b57;
+  --color-mint-700: #087a4b;
+  --color-mint-800: #064e35;
+  --color-mint-900: #063d2c;
+  /* Compatibility aliases keep legacy utility classes on-brand while screens
+     are progressively migrated to the semantic mint scale. */
+  --color-violet-50: #f5f8f5;
+  --color-violet-100: #e6f3ec;
+  --color-violet-200: #ddf5e7;
+  --color-violet-300: #b7dbc5;
+  --color-violet-400: #74b98d;
+  --color-violet-500: #168b57;
+  --color-violet-600: #087a4b;
+  --color-violet-700: #087a4b;
+  --color-violet-800: #064e35;
+  --color-violet-900: #063d2c;
+  --color-violet-950: #063d2c;
   --shadow-card: var(--oya-shadow-card);
   --shadow-pop: var(--oya-shadow-pop);
   --font-mono: "Geist Mono", "Geist Mono Fallback";
@@ -202,26 +220,22 @@
 .animation-delay-1000 {
   animation-delay: 1s;
 }
-/* ------------------------------------------------------------------
-   Public landing theme (violet + mango). Scoped to .landing so the
-   customer / restaurant / rider / admin dashboards keep their own tokens.
-------------------------------------------------------------------- */
-/* Palette aliases are global so shared helpers (.lp-doodles) work in every app. */
+/* Landing aliases share the same refreshed brand palette. */
 :root,
 .landing {
-  --lp-violet-950: #1a1033;
-  --lp-violet-900: #2a1156;
-  --lp-violet-800: #4c1d95;
-  --lp-violet-700: #5b21b6;
-  --lp-violet-600: #6d28d9;
-  --lp-violet-100: #ede4ff;
-  --lp-mango: #fdba2d;
-  --lp-mango-600: #f59e0b;
-  --lp-cream: #fff4d6;
-  --lp-cream-50: #fffbef;
-  --lp-ink: #1a1033;
-  --lp-ink-soft: #5c5470;
-  --lp-leaf: #7ed957;
+  --lp-violet-950: #063d2c;
+  --lp-violet-900: #064e35;
+  --lp-violet-800: #087a4b;
+  --lp-violet-700: #087a4b;
+  --lp-violet-600: #168b57;
+  --lp-violet-100: #e6f3ec;
+  --lp-mango: #ff6900;
+  --lp-mango-600: #c74b00;
+  --lp-cream: #e6f3ec;
+  --lp-cream-50: #f5f8f5;
+  --lp-ink: #14251d;
+  --lp-ink-soft: #77827c;
+  --lp-leaf: #74b98d;
 }
 
 .landing {
@@ -234,7 +248,7 @@
   letter-spacing: -0.01em;
 }
 
-/* Faint food-doodle wallpaper for the violet hero / bands */
+/* Faint food-doodle wallpaper for the brand-green hero / bands */
 .lp-doodles {
   background-color: var(--lp-violet-700);
   background-image:

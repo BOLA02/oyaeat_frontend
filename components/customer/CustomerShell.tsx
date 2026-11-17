@@ -26,8 +26,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useCart } from "@/hooks/useCart";
 import {
-  clearSession,
+  CUSTOMER_SESSION_EVENT,
   getUser,
+  logoutCustomer,
   naira,
   type CustomerUser,
 } from "@/lib/customer";
@@ -93,12 +94,17 @@ export default function CustomerShell({
   const searchRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const u = getUser();
-    setUser(u);
-    setChecked(true);
-    if (!u && needsAuth(pathname)) {
-      router.replace(`/customer/login?next=${encodeURIComponent(pathname)}`);
-    }
+    const syncSession = () => {
+      const u = getUser();
+      setUser(u);
+      setChecked(true);
+      if (!u && needsAuth(pathname)) {
+        router.replace(`/customer/login?next=${encodeURIComponent(pathname)}`);
+      }
+    };
+    syncSession();
+    window.addEventListener(CUSTOMER_SESSION_EVENT, syncSession);
+    return () => window.removeEventListener(CUSTOMER_SESSION_EVENT, syncSession);
   }, [pathname, router]);
 
   if (isAuthScreen(pathname)) return <>{children}</>;
@@ -109,7 +115,7 @@ export default function CustomerShell({
   };
 
   const logout = () => {
-    clearSession();
+    void logoutCustomer();
     setUser(null);
     router.push("/customer/login");
   };
@@ -138,7 +144,7 @@ export default function CustomerShell({
           </Link>
 
           <div
-            className="flex min-w-0 items-center gap-1.5 rounded-full bg-violet-50 px-3 py-1.5 text-sm font-semibold text-violet-900"
+            className="flex min-w-0 items-center gap-1.5 rounded-full bg-mint-100 px-3 py-1.5 text-sm font-semibold text-mint-900"
             title="Delivery location"
           >
             <MapPin className="h-4 w-4 shrink-0 text-primary" />
@@ -158,7 +164,7 @@ export default function CustomerShell({
               value={q}
               onChange={(e) => setQ(e.target.value)}
               placeholder="Search restaurants, cuisines or dishes"
-              className="h-11 w-full rounded-full border border-transparent bg-violet-50 pl-11 pr-4 text-sm outline-none transition placeholder:text-muted-foreground focus:border-ring focus:bg-card focus:ring-4 focus:ring-ring/15"
+              className="h-11 w-full rounded-full border border-transparent bg-mint-100 pl-11 pr-4 text-sm outline-none transition placeholder:text-muted-foreground focus:border-ring focus:bg-card focus:ring-4 focus:ring-ring/15"
               aria-label="Search"
             />
           </form>
@@ -172,7 +178,7 @@ export default function CustomerShell({
                   className={cn(
                     "rounded-full px-4 py-2 text-sm font-semibold transition",
                     isActive(n.href)
-                      ? "bg-violet-100 text-violet-900"
+                      ? "bg-mint-100 text-mint-900"
                       : "text-muted-foreground hover:bg-accent hover:text-foreground",
                   )}
                 >
@@ -186,7 +192,7 @@ export default function CustomerShell({
             <Link
               href="/customer/cart"
               aria-label={`Cart, ${count} items`}
-              className="relative hidden h-11 items-center gap-2 rounded-full bg-primary px-4 text-sm font-bold text-primary-foreground transition hover:bg-violet-800 md:flex"
+              className="relative hidden h-11 items-center gap-2 rounded-full bg-primary px-4 text-sm font-bold text-primary-foreground transition hover:bg-mint-800 md:flex"
             >
               <ShoppingBag className="h-4 w-4" />
               {count > 0 ? (
@@ -206,7 +212,7 @@ export default function CustomerShell({
                 <DropdownMenuTrigger asChild>
                   <button
                     aria-label="Account menu"
-                    className="grid h-11 w-11 place-items-center rounded-full bg-violet-100 text-sm font-extrabold text-violet-900 outline-none ring-offset-2 transition hover:bg-violet-200 focus-visible:ring-2 focus-visible:ring-ring"
+                    className="grid h-11 w-11 place-items-center rounded-full bg-mint-100 text-sm font-extrabold text-mint-900 outline-none ring-offset-2 transition hover:bg-mint-200 focus-visible:ring-2 focus-visible:ring-ring"
                   >
                     {initials}
                   </button>
@@ -254,13 +260,13 @@ export default function CustomerShell({
               <>
                 <Link
                   href="/customer/login"
-                  className="hidden h-11 items-center rounded-full px-4 text-sm font-bold text-primary transition hover:bg-violet-50 sm:flex"
+                  className="hidden h-11 items-center rounded-full px-4 text-sm font-bold text-primary transition hover:bg-mint-50 sm:flex"
                 >
                   Log in
                 </Link>
                 <Link
                   href="/customer/signup"
-                  className="inline-flex h-11 items-center rounded-full bg-primary px-5 text-sm font-bold text-primary-foreground shadow-sm transition hover:bg-violet-800"
+                  className="inline-flex h-11 items-center rounded-full bg-primary px-5 text-sm font-bold text-primary-foreground shadow-sm transition hover:bg-mint-800"
                 >
                   Sign up
                 </Link>
@@ -278,7 +284,7 @@ export default function CustomerShell({
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
                 placeholder="What are you craving?"
-                className="h-11 w-full rounded-full bg-violet-50 pl-11 pr-4 text-base outline-none focus:ring-4 focus:ring-ring/15"
+                className="h-11 w-full rounded-full bg-mint-100 pl-11 pr-4 text-base outline-none focus:ring-4 focus:ring-ring/15"
                 aria-label="Search"
               />
             </div>
@@ -311,7 +317,7 @@ export default function CustomerShell({
                   <span
                     className={cn(
                       "relative grid h-8 w-12 place-items-center rounded-full transition",
-                      active && "bg-violet-100",
+                      active && "bg-mint-100",
                     )}
                   >
                     <n.icon className="h-5 w-5" />

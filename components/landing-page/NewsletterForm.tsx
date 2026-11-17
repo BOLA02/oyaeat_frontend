@@ -1,27 +1,13 @@
 "use client";
 
-import { FormEvent, useState } from "react";
-
-// Newsletter signup is not wired to a backend yet; this only confirms
-// locally so the control behaves like a real form.
 export default function NewsletterForm() {
-  const [done, setDone] = useState(false);
-
-  const onSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    setDone(true);
-  };
-
-  if (done) {
-    return (
-      <p role="status" className="text-[var(--lp-mango)] font-bold text-sm">
-        Thanks! We&apos;ll keep you posted.
-      </p>
-    );
-  }
-
   return (
-    <form className="flex gap-2" onSubmit={onSubmit}>
+    <div className="rounded-xl border border-white/20 bg-white/5 p-4 text-sm text-white/75">
+      Newsletter signup is coming soon. Follow OyaEat&apos;s official channels for launch updates.
+    </div>
+    /* No form is shown until a documented subscription endpoint exists. */
+    /*
+    <form className="flex gap-2">
       <label htmlFor="footer-email" className="sr-only">
         Email address
       </label>
@@ -39,5 +25,6 @@ export default function NewsletterForm() {
         Subscribe
       </button>
     </form>
+    */
   );
 }

@@ -117,7 +117,7 @@ export default function AddBusinessPage() {
     setError("");
 
     try {
-      const token = localStorage.getItem("authToken");
+      const token = sessionStorage.getItem("vendor_token");
       if (!token) {
         setError("Your session has expired. Please restart registration.");
         router.push("/partner-signup");

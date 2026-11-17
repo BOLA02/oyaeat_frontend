@@ -144,36 +144,6 @@ export default function RestaurantPage() {
         </div>
       </section>
 
-      {/* Demo Credentials */}
-      <section className="py-16 px-4">
-        <div className="max-w-4xl mx-auto bg-primary/10 border border-primary/20 rounded-lg p-12">
-          <h2 className="text-2xl font-bold text-foreground mb-6 text-center">
-            Try Demo Account
-          </h2>
-          <div className="grid md:grid-cols-2 gap-8 mb-8">
-            <div className="bg-background rounded-lg p-6 border border-border">
-              <p className="text-sm font-semibold text-primary mb-2">EMAIL</p>
-              <p className="font-mono text-foreground break-all">
-                admin@pizzapalace.com
-              </p>
-            </div>
-            <div className="bg-background rounded-lg p-6 border border-border">
-              <p className="text-sm font-semibold text-primary mb-2">
-                PASSWORD
-              </p>
-              <p className="font-mono text-foreground">password123</p>
-            </div>
-          </div>
-          <div className="text-center">
-            <Button size="lg" asChild>
-              <Link href="/restaurant/login">
-                Login to Admin Dashboard <ArrowRight className="ml-2 w-5 h-5" />
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
       {/* Footer */}
       <footer className="border-t border-border py-12 px-4 bg-card/30">
         <div className="max-w-6xl mx-auto flex flex-col items-center gap-4 text-center text-muted-foreground">

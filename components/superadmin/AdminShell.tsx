@@ -120,8 +120,8 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
   useEffect(() => {
     let token: string | null = null;
     try {
-      token = localStorage.getItem("admin_token");
-      setAdmin(JSON.parse(localStorage.getItem("admin_user") || "null"));
+      token = sessionStorage.getItem("admin_token");
+      setAdmin(JSON.parse(sessionStorage.getItem("admin_user") || "null"));
     } catch {}
     if (!token) {
       router.replace("/superadmin/login");
@@ -133,8 +133,8 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
 
   const logout = () => {
     try {
-      localStorage.removeItem("admin_token");
-      localStorage.removeItem("admin_user");
+      sessionStorage.removeItem("admin_token");
+      sessionStorage.removeItem("admin_user");
     } catch {}
     router.replace("/superadmin/login");
   };

@@ -65,8 +65,8 @@ export default function GalleryFormContent() {
 
     try {
       const token =
-        localStorage.getItem("authToken") ||
-        localStorage.getItem("vendor_token") ||
+        sessionStorage.getItem("vendor_token") ||
+        sessionStorage.getItem("vendor_token") ||
         localStorage.getItem("token");
 
       if (!token) {

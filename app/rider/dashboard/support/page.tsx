@@ -19,7 +19,7 @@ function Alerts() {
   const load = useCallback(async () => {
     setError("");
     try {
-      const res = await fetch(`${API}/chat/operations-alerts`, { headers: { Authorization: `Bearer ${localStorage.getItem("riderToken")}` } });
+      const res = await fetch(`${API}/chat/operations-alerts`, { headers: { Authorization: `Bearer ${sessionStorage.getItem("rider_token")}` } });
       const json = await res.json().catch(() => ({}));
       if (!res.ok || json.success === false) throw new Error(json.message || "We couldn't load your alerts.");
       setAlerts(json.data || []);

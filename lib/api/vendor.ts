@@ -164,41 +164,12 @@ function base() {
   return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
 }
 
-function token() {
-  if (typeof window === "undefined") {
-    throw new Error("Not logged in");
-  }
-
-  const t = localStorage.getItem("authToken");
-  if (!t) throw new Error("Not logged in");
-
-  return t;
-}
-
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(`${base()}${path}`, {
-    ...init,
-    headers: {
-      Authorization: `Bearer ${token()}`,
-      ...(init?.headers || {}),
-    },
-    cache: "no-store",
-  });
-
-  const json = (await res.json().catch(() => null)) as
-    ApiOk<any> | ApiErr | null;
-
-  if (!res.ok) {
-    throw new Error((json as any)?.message || `Request failed (${res.status})`);
-  }
-
-  if (!json || (json as any).success === false) {
-    throw new Error((json as any)?.message || "Request failed");
-  }
+  const json = await roleFetch<ApiOk<any> | ApiErr | any>("vendor", path, init);
 
   // Most endpoints wrap their payload in `data`; a few (e.g. /vendor/dashboard) return it at the top level.
   const body = json as any;
-  return (body.data !== undefined ? body.data : body) as T;
+  return (body?.data !== undefined ? body.data : body) as T;
 }
 
 function makeMenuFormData(body: MenuItemPayload) {
@@ -363,3 +334,4 @@ export const vendorApi = {
     }>(`/vendor/reviews${suffix}`);
   },
 };
+import { roleFetch } from "@/lib/roleSession";

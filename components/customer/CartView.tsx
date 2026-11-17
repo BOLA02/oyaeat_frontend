@@ -102,16 +102,16 @@ export default function CartView() {
         <section className="space-y-4">
           <Link
             href={`/customer/restaurant/${cart.restaurantId}`}
-            className="inline-flex items-center gap-2 rounded-full bg-violet-50 px-4 py-2 text-sm font-bold text-violet-900 transition hover:bg-violet-100"
+            className="inline-flex items-center gap-2 rounded-full bg-mint-100 px-4 py-2 text-sm font-bold text-mint-900 transition hover:bg-mint-200"
           >
             <Store className="h-4 w-4" /> {cart.restaurantName}
-            <span className="font-medium text-violet-700">· add more</span>
+            <span className="font-medium text-mint-700">· add more</span>
           </Link>
 
           <ul className="divide-y divide-border overflow-hidden rounded-3xl border border-border bg-card shadow-card">
             {cart.items.map((item) => (
               <li key={item.menuItemId} className="flex items-center gap-4 p-4">
-                <div className="h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-violet-50">
+                <div className="h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-mint-50">
                   <RestaurantImage src={item.image} alt={item.name} className="h-full w-full" />
                 </div>
                 <div className="min-w-0 flex-1">

@@ -1,22 +1,18 @@
 import { type Thread, type Message } from "@/lib/types/chat";
+import { getRoleToken } from "@/lib/roleSession";
+import { getToken as getCustomerToken } from "@/lib/customer";
 
 const API = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
 
-function authHeaders(key: string): HeadersInit {
+function authHeaders(role: "customer" | "admin" | "vendor" | "rider"): HeadersInit {
   if (typeof window === "undefined")
     return { "Content-Type": "application/json" };
 
-  const token =
-    localStorage.getItem(key) ||
-    localStorage.getItem("authToken") ||
-    localStorage.getItem("admin_token") ||
-    localStorage.getItem("vendor_token") ||
-    localStorage.getItem("customer_token") ||
-    localStorage.getItem("riderToken");
+  const token = role === "customer" ? getCustomerToken() : getRoleToken(role);
 
   if (!token) {
     console.warn(
-      `[Chat Auth] No token found in localStorage for key query: ${key}`,
+      `[Chat Auth] No ${role} session is active in this tab.`,
     );
     return { "Content-Type": "application/json" };
   }
@@ -27,20 +23,12 @@ function authHeaders(key: string): HeadersInit {
   };
 }
 
-const getAuthKey = (role: "customer" | "admin" | "vendor" | "rider") => {
-  if (role === "customer") return "customer_token";
-  if (role === "admin") return "admin_token";
-  if (role === "vendor") return "authToken";
-  if (role === "rider") return "rider_token";
-  return "authToken";
-};
-
 export const chatApi = {
   getThreads: async (
     role: "customer" | "admin" | "vendor" | "rider",
   ): Promise<any> => {
     const res = await fetch(`${API}/chat/threads`, {
-      headers: authHeaders(getAuthKey(role)),
+      headers: authHeaders(role),
     });
     if (!res.ok) throw new Error("Failed to fetch threads");
     return res.json();
@@ -53,7 +41,7 @@ export const chatApi = {
   ): Promise<any> => {
     const res = await fetch(`${API}/chat/threads`, {
       method: "POST",
-      headers: authHeaders(getAuthKey(role)),
+      headers: authHeaders(role),
       body: JSON.stringify({ subject, type: threadType }),
     });
     if (!res.ok) throw new Error("Failed to create thread");
@@ -65,7 +53,7 @@ export const chatApi = {
     threadId: string,
   ): Promise<any> => {
     const res = await fetch(`${API}/chat/threads/${threadId}/messages`, {
-      headers: authHeaders(getAuthKey(role)),
+      headers: authHeaders(role),
     });
     if (!res.ok) throw new Error("Failed to fetch messages");
     return res.json();
@@ -78,7 +66,7 @@ export const chatApi = {
   ): Promise<any> => {
     const res = await fetch(`${API}/chat/threads/${threadId}/messages`, {
       method: "POST",
-      headers: authHeaders(getAuthKey(role)),
+      headers: authHeaders(role),
       body: JSON.stringify({ content }),
     });
     if (!res.ok) throw new Error("Failed to send message");
@@ -93,7 +81,7 @@ export const chatApi = {
   ): Promise<any> => {
     const res = await fetch(`${API}/chat/threads/${threadId}/status`, {
       method: "PATCH",
-      headers: authHeaders(getAuthKey(role)),
+      headers: authHeaders(role),
       body: JSON.stringify({ status }),
     });
     if (!res.ok) throw new Error("Failed to update thread status");
@@ -107,17 +95,14 @@ export const chatApi = {
   ): Promise<any> => {
     const res = await fetch(`${API}/chat/threads/${threadId}`, {
       method: "DELETE",
-      headers: authHeaders(getAuthKey(role)),
+      headers: authHeaders(role),
     });
     if (!res.ok) throw new Error("Failed to delete thread");
     return res.json();
   },
 
   getRiderAlerts: async (): Promise<any> => {
-    const token =
-      localStorage.getItem("rider_token") ||
-      localStorage.getItem("riderToken") ||
-      localStorage.getItem("authToken");
+    const token = getRoleToken("rider");
 
     const res = await fetch(`${API}/chat/operations-alerts`, {
       headers: {

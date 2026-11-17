@@ -7,7 +7,7 @@ import { ChevronRight, Heart, LifeBuoy, LogOut, Mail, Phone, Receipt } from "luc
 import { PageHeader } from "@/components/customer/ui";
 import ProfileForm from "@/components/customer/ProfileForm";
 import AddressBook from "@/components/customer/AddressBook";
-import { clearSession, getUser, type CustomerUser } from "@/lib/customer";
+import { getUser, logoutCustomer, type CustomerUser } from "@/lib/customer";
 
 const LINKS = [
   { href: "/customer/dashboard/orders", label: "My orders", hint: "Track and reorder", icon: Receipt },
@@ -37,12 +37,12 @@ export default function AccountPage() {
             {user.firstName} {user.lastName}
           </p>
           {user.email && (
-            <p className="mt-1 flex items-center gap-2 truncate text-sm text-violet-100">
+            <p className="mt-1 flex items-center gap-2 truncate text-sm text-white/80">
               <Mail className="h-4 w-4 shrink-0" /> {user.email}
             </p>
           )}
           {user.phone && (
-            <p className="mt-0.5 flex items-center gap-2 text-sm text-violet-100">
+            <p className="mt-0.5 flex items-center gap-2 text-sm text-white/80">
               <Phone className="h-4 w-4 shrink-0" /> {user.phone}
             </p>
           )}
@@ -57,8 +57,8 @@ export default function AccountPage() {
       <ul className="mt-5 divide-y divide-border overflow-hidden rounded-3xl border border-border bg-card shadow-card">
         {LINKS.map((l) => (
           <li key={l.href}>
-            <Link href={l.href} className="flex items-center gap-4 p-4 transition hover:bg-violet-50/60">
-              <span className="grid h-11 w-11 place-items-center rounded-xl bg-violet-100 text-violet-800">
+            <Link href={l.href} className="flex items-center gap-4 p-4 transition hover:bg-mint-50/60">
+              <span className="grid h-11 w-11 place-items-center rounded-xl bg-mint-100 text-mint-800">
                 <l.icon className="h-5 w-5" />
               </span>
               <span className="flex-1">
@@ -73,7 +73,7 @@ export default function AccountPage() {
 
       <button
         onClick={() => {
-          clearSession();
+          void logoutCustomer();
           router.push("/customer/login");
         }}
         className="mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-full border border-destructive/30 text-sm font-bold text-destructive transition hover:bg-destructive/10"

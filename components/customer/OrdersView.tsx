@@ -7,7 +7,7 @@ import { format } from "date-fns";
 import { ChevronRight, MapPin, Receipt, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 import { EmptyState, ErrorState, PageHeader, RowSkeleton, StatusPill } from "./ui";
-import { ACTIVE_STATUSES, api, confirmPendingPayments, isAwaitingPayment, naira } from "@/lib/customer";
+import { ACTIVE_STATUSES, api, clearPendingPayment, getCustomerId, getPendingPayment, getUser, isAwaitingPayment, naira } from "@/lib/customer";
 import { useCart } from "@/hooks/useCart";
 import { cn } from "@/lib/utils";
 
@@ -32,11 +32,22 @@ export default function OrdersView() {
     try {
       let json = await api("/orders/my", { auth: true });
       let list: any[] = json.data?.orders || [];
-      // Back from Paystack (or reloaded): confirm payments the server has not recorded yet.
-      if (list.some(isAwaitingPayment) && (await confirmPendingPayments(list)) > 0) {
-        json = await api("/orders/my", { auth: true });
-        list = json.data?.orders || [];
-        toast.success("Payment confirmed. The restaurant has your order.");
+      const customerId = getCustomerId(getUser());
+      const pending = customerId ? getPendingPayment(customerId) : null;
+      if (pending) {
+        try {
+          await api(`/orders/verify-payment/${encodeURIComponent(pending.reference)}`, { auth: true });
+          json = await api("/orders/my", { auth: true });
+          list = json.data?.orders || [];
+          const paidOrder = list.find((order) => String(order.id) === pending.orderId && (order.paymentStatus === "paid" || order.isPaid === true));
+          if (paidOrder) {
+            cart.clear();
+            clearPendingPayment(customerId!);
+            toast.success("Payment confirmed. The restaurant has your order.");
+          }
+        } catch {
+          // Failed, cancelled and unknown outcomes deliberately retain both cart and marker.
+        }
       }
       setOrders(list);
       if (list.some((o) => ACTIVE_STATUSES.includes(o.status))) setTab("active");
@@ -45,16 +56,10 @@ export default function OrdersView() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [cart]);
 
   useEffect(() => {
     load();
-    // Returning from the payment page: confirm and empty the cart.
-    if (sessionStorage.getItem("oyaeat_pending_payment")) {
-      sessionStorage.removeItem("oyaeat_pending_payment");
-      cart.clear();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [load]);
 
   const isActive = (o: any) => ACTIVE_STATUSES.includes(o.status);
@@ -84,7 +89,7 @@ export default function OrdersView() {
     <div className="mx-auto max-w-3xl">
       <PageHeader title="Orders" subtitle="Track what's on its way and revisit past meals." />
 
-      <div role="tablist" className="mb-5 inline-flex rounded-full bg-violet-50 p-1">
+      <div role="tablist" className="mb-5 inline-flex rounded-full bg-mint-100 p-1">
         {TABS.map((t) => (
           <button
             key={t.id}
@@ -101,7 +106,7 @@ export default function OrdersView() {
           >
             {t.label}
             {counts[t.id] > 0 && (
-              <span className={cn("grid h-5 min-w-5 place-items-center rounded-full px-1 text-[11px]", t.id === "active" ? "bg-cta text-cta-foreground" : "bg-violet-100 text-violet-800")}>
+              <span className={cn("grid h-5 min-w-5 place-items-center rounded-full px-1 text-[11px]", t.id === "active" ? "bg-cta text-cta-foreground" : "bg-mint-200 text-mint-800")}>
                 {counts[t.id]}
               </span>
             )}
@@ -125,7 +130,7 @@ export default function OrdersView() {
           <ul className="space-y-3">
             {list.slice(0, shown).map((o) => (
               <li key={o.id} className="overflow-hidden rounded-3xl border border-border bg-card shadow-card">
-                <Link href={`/customer/dashboard/orders/${o.id}`} className="block p-4 transition hover:bg-violet-50/50 sm:p-5">
+                <Link href={`/customer/dashboard/orders/${o.id}`} className="block p-4 transition hover:bg-mint-50/50 sm:p-5">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <p className="font-display truncate text-lg font-bold">{o.business?.name || "Restaurant"}</p>
@@ -151,7 +156,7 @@ export default function OrdersView() {
                 {!isActive(o) && o.status === "delivered" && (
                   <button
                     onClick={() => reorder(o)}
-                    className="flex w-full items-center justify-center gap-2 border-t border-border py-3 text-sm font-bold text-primary transition hover:bg-violet-50"
+                    className="flex w-full items-center justify-center gap-2 border-t border-border py-3 text-sm font-bold text-primary transition hover:bg-mint-50"
                   >
                     <RotateCcw className="h-4 w-4" /> Order again
                   </button>
@@ -162,7 +167,7 @@ export default function OrdersView() {
           {list.length > shown && (
             <button
               onClick={() => setShown((n) => n + 8)}
-              className="mx-auto mt-5 flex h-11 items-center rounded-full border border-border bg-card px-6 text-sm font-bold transition hover:bg-violet-50"
+              className="mx-auto mt-5 flex h-11 items-center rounded-full border border-border bg-card px-6 text-sm font-bold transition hover:bg-mint-50"
             >
               Show more
             </button>

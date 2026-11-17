@@ -174,7 +174,7 @@ export default function HomeView() {
                 href={`/customer/restaurant/${it.restaurantId}`}
                 className="group w-44 shrink-0 snap-start overflow-hidden rounded-2xl border border-border bg-card shadow-card transition hover:-translate-y-0.5 hover:shadow-pop"
               >
-                <div className="h-24 overflow-hidden bg-violet-50">
+                <div className="h-24 overflow-hidden bg-mint-50">
                   {(it.menuItem?.imageUrl || it.imageUrl) && (
                     <img
                       src={resolveImg(it.menuItem?.imageUrl || it.imageUrl)}
@@ -208,7 +208,7 @@ export default function HomeView() {
             q ? (
               <button
                 onClick={() => setQuery("")}
-                className="inline-flex items-center gap-1 rounded-full bg-violet-100 px-3 py-1.5 text-xs font-bold text-violet-900"
+                className="inline-flex items-center gap-1 rounded-full bg-mint-100 px-3 py-1.5 text-xs font-bold text-mint-900"
               >
                 <X className="h-3.5 w-3.5" /> Clear
               </button>
@@ -304,7 +304,7 @@ function Chip({
         "inline-flex h-10 shrink-0 items-center gap-2 rounded-full border px-4 text-sm font-bold transition",
         active
           ? "border-primary bg-primary text-primary-foreground shadow-sm"
-          : "border-border bg-card text-foreground hover:border-violet-300 hover:bg-violet-50",
+          : "border-border bg-card text-foreground hover:border-mint-300 hover:bg-mint-50",
       )}
     >
       {Icon && <Icon className="h-4 w-4" />}

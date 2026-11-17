@@ -5,7 +5,16 @@ import React, { Suspense, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, Eye, EyeOff, Loader2 } from "lucide-react";
-import { api } from "@/lib/customer";
+import GoogleSignInButton from "@/components/customer/GoogleSignInButton";
+import {
+  api,
+  ApiError,
+  authenticateCustomerWithGoogle,
+  getCustomerId,
+  getUser,
+  saveCustomerSession,
+} from "@/lib/customer";
+import { customerCartKey, mergeGuestCartIntoCustomer } from "@/lib/cartStorage";
 
 type Mode = "login" | "signup";
 
@@ -28,8 +37,39 @@ function Form({ mode }: { mode: Mode }) {
   const set = (e: React.ChangeEvent<HTMLInputElement>) => setF({ ...f, [e.target.name]: e.target.value });
   const signup = mode === "signup";
 
+  const displayGoogleError = (err: unknown) => {
+    if (err instanceof ApiError) {
+      if (err.status === 0) return "We couldn't reach OyaEat. Check your connection and try again.";
+      if (err.status === 401) return "This Google sign-in has expired or is invalid. Please try again.";
+      if (err.status === 403) return "This account cannot sign in. Please contact OyaEat support.";
+      if (err.status === 409) return "This email already has an OyaEat account. Sign in with your existing method or contact support to link it.";
+    }
+    return "Google sign-in could not be completed. Please try again.";
+  };
+
+  const signInWithGoogle = async (credential: string) => {
+    if (loading) return;
+    const previousCustomerId = getCustomerId(getUser());
+    setError("");
+    setLoading(true);
+    try {
+      const json = await authenticateCustomerWithGoogle(credential);
+      saveCustomerSession(json.data);
+      const customerId = getCustomerId(json.data.user);
+      if (!previousCustomerId && customerId) {
+        mergeGuestCartIntoCustomer(localStorage, customerId);
+        window.dispatchEvent(new CustomEvent("oyaeat:cart", { detail: { key: customerCartKey(customerId) } }));
+      }
+      router.push(next);
+    } catch (err) {
+      setError(displayGoogleError(err));
+      setLoading(false);
+    }
+  };
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const previousCustomerId = getCustomerId(getUser());
     setError("");
     if (signup) {
       if (!f.firstName || !f.lastName || !f.email || !f.phone || !f.password)
@@ -47,8 +87,12 @@ function Form({ mode }: { mode: Mode }) {
         method: "POST",
         body: JSON.stringify(body),
       });
-      localStorage.setItem("customer_token", json.data.token);
-      localStorage.setItem("customer_user", JSON.stringify(json.data.user));
+      saveCustomerSession(json.data);
+      const customerId = getCustomerId(json.data.user);
+      if (!previousCustomerId && customerId) {
+        mergeGuestCartIntoCustomer(localStorage, customerId);
+        window.dispatchEvent(new CustomEvent("oyaeat:cart", { detail: { key: customerCartKey(customerId) } }));
+      }
       router.push(next);
     } catch (err: any) {
       setError(err.message);
@@ -109,7 +153,7 @@ function Form({ mode }: { mode: Mode }) {
             className={`${FIELD} pr-12`}
             disabled={loading}
           />
-          <button type="button" onClick={() => setShow(!show)} aria-label={show ? "Hide password" : "Show password"} className="absolute right-1.5 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full text-muted-foreground hover:bg-violet-50">
+          <button type="button" onClick={() => setShow(!show)} aria-label={show ? "Hide password" : "Show password"} className="absolute right-1.5 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full text-muted-foreground hover:bg-mint-50">
             {show ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
           </button>
         </div>
@@ -123,10 +167,22 @@ function Form({ mode }: { mode: Mode }) {
       <button
         type="submit"
         disabled={loading}
-        className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-primary text-base font-extrabold text-primary-foreground shadow-sm transition hover:bg-violet-800 active:scale-[0.98] disabled:opacity-60"
+        className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-primary text-base font-extrabold text-primary-foreground shadow-sm transition hover:bg-mint-800 active:scale-[0.98] disabled:opacity-60"
       >
         {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : signup ? "Create account" : "Log in"}
       </button>
+
+      <div className="flex items-center gap-3 py-1" aria-hidden="true">
+        <span className="h-px flex-1 bg-border" />
+        <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">or</span>
+        <span className="h-px flex-1 bg-border" />
+      </div>
+
+      <GoogleSignInButton
+        disabled={loading}
+        onCredential={signInWithGoogle}
+        onError={setError}
+      />
 
       <p className="pt-2 text-center text-sm text-muted-foreground">
         {signup ? "Already have an account?" : "New to OyaEat?"}{" "}
@@ -152,7 +208,7 @@ export default function AuthScreen({ mode }: { mode: Mode }) {
           <h2 className="font-display mt-6 text-4xl font-extrabold leading-tight">
             {signup ? "Your next favourite meal is a few taps away." : "Good food, delivered hot."}
           </h2>
-          <p className="mt-3 text-lg text-violet-100">Local kitchens, real riders, live tracking from stove to door.</p>
+          <p className="mt-3 text-lg text-white/80">Local kitchens, real riders, live tracking from stove to door.</p>
         </div>
         <span className="h-1.5 w-24 rounded-full bg-cta" />
       </aside>
@@ -160,7 +216,7 @@ export default function AuthScreen({ mode }: { mode: Mode }) {
       {/* Form */}
       <main className="flex flex-col justify-center px-5 py-10 sm:px-12">
         <div className="mx-auto w-full max-w-md">
-          <Link href="/customer" className="mb-8 inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-bold text-primary hover:bg-violet-50 lg:hidden">
+          <Link href="/customer" className="mb-8 inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-bold text-primary hover:bg-mint-50 lg:hidden">
             <ArrowLeft className="h-4 w-4" /> Back
           </Link>
           <Logo className="mb-6 h-12 lg:hidden" />

@@ -25,7 +25,6 @@ export function MainSuspensionBlock({
     setIsSubmittingAppeal(true);
     try {
       const formData = new FormData();
-      formData.append("businessId", String(businessId));
       formData.append("statement", appealReason.trim());
       if (evidenceFile) {
         formData.append("evidence", evidenceFile);
@@ -35,10 +34,10 @@ export function MainSuspensionBlock({
       const API_URL =
         process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
 
-      const response = await fetch(`${API_URL}/compliance/appeal`, {
+      const response = await fetch(`${API_URL}/compliance/businesses/${businessId}/appeal`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authToken") || localStorage.getItem("vendor_token") || ""}`,
+          Authorization: `Bearer ${sessionStorage.getItem("vendor_token") || ""}`,
           // Note: Leave out 'Content-Type'. Browser must auto-inject boundaries for FormData!
         },
         body: formData,

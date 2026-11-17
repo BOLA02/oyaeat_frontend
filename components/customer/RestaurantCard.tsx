@@ -26,7 +26,7 @@ export function RestaurantImage({
     return (
       <div
         className={cn(
-          "grid place-items-center bg-gradient-to-br from-violet-100 to-mango-100 text-violet-400",
+          "grid place-items-center bg-gradient-to-br from-mint-100 to-mango-100 text-mint-600",
           className,
         )}
         role="img"
@@ -58,7 +58,7 @@ export default function RestaurantCard({ restaurant }: { restaurant: any }) {
       href={`/customer/restaurant/${restaurant.id}`}
       className="group flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-pop focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/25"
     >
-      <div className="relative aspect-[16/10] overflow-hidden bg-violet-50">
+      <div className="relative aspect-[16/10] overflow-hidden bg-mint-50">
         <RestaurantImage
           src={restaurantImage(restaurant)}
           alt={restaurant.name}
@@ -83,7 +83,7 @@ export default function RestaurantCard({ restaurant }: { restaurant: any }) {
           <Heart
             className={cn(
               "h-5 w-5 transition",
-              liked ? "fill-destructive text-destructive" : "text-violet-900",
+              liked ? "fill-destructive text-destructive" : "text-mint-900",
             )}
           />
         </button>

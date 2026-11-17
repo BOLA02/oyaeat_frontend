@@ -7,7 +7,7 @@ import {
   AdvancedMarker,
   } from "@vis.gl/react-google-maps";
 import { Loader2, Bike } from "lucide-react";
-import { API_URL } from "@/lib/customer";
+import { api } from "@/lib/customer";
 
 interface RiderCoordinates {
   latitude: number;
@@ -19,27 +19,14 @@ export default function CustomerTrackingMap({ orderId }: { orderId: number }) {
   const [riderCoords, setRiderCoords] = useState<RiderCoordinates | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const API_BASE_URL = API_URL;
-
   useEffect(() => {
     const checkRiderPosition = async () => {
       try {
-        const token = localStorage.getItem("customer_token");
-
         // Build a secure endpoint under orders controller that returns order.rider.shiftLogs row data
-        const res = await fetch(
-          `${API_BASE_URL}/orders/${orderId}/track-rider`,
-          {
-            headers: { Authorization: `Bearer ${token || ""}` },
-          },
-        );
-
-        if (res.ok) {
-          const data = await res.json();
-          // Expects backend format: { latitude: number, longitude: number, riderName: string }
-          if (data.latitude && data.longitude) {
-            setRiderCoords(data);
-          }
+        const data = await api<RiderCoordinates>(`/orders/${orderId}/track-rider`, { auth: true });
+        // Expects backend format: { latitude: number, longitude: number, riderName: string }
+        if (data.latitude && data.longitude) {
+          setRiderCoords(data);
         }
       } catch (err) {
         console.error(
@@ -55,11 +42,11 @@ export default function CustomerTrackingMap({ orderId }: { orderId: number }) {
     // Poll position details dynamically every 8 seconds
     const interval = setInterval(checkRiderPosition, 8000);
     return () => clearInterval(interval);
-  }, [orderId, API_BASE_URL]);
+  }, [orderId]);
 
   if (loading) {
     return (
-      <div className="flex h-72 w-full items-center justify-center bg-violet-50">
+      <div className="flex h-72 w-full items-center justify-center bg-mint-50">
         <Loader2 className="h-6 w-6 animate-spin text-primary" />
       </div>
     );
@@ -67,13 +54,13 @@ export default function CustomerTrackingMap({ orderId }: { orderId: number }) {
 
   if (!riderCoords) {
     return (
-      <div className="flex items-center gap-4 bg-violet-50 p-5">
+      <div className="flex items-center gap-4 bg-mint-50 p-5">
         <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-card text-primary">
           <Bike className="h-5 w-5" />
         </span>
         <div>
-          <p className="font-bold text-violet-900">Waiting for your rider&apos;s location</p>
-          <p className="text-sm text-violet-800/80">
+          <p className="font-bold text-mint-900">Waiting for your rider&apos;s location</p>
+          <p className="text-sm text-mint-800/80">
             The live map appears here as soon as the rider starts moving.
           </p>
         </div>

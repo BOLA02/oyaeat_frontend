@@ -79,7 +79,7 @@ export default function VerifyBusinessContent() {
 
     const fetchExistingDocuments = async (bId: string) => {
       try {
-        const token = localStorage.getItem("authToken");
+        const token = sessionStorage.getItem("vendor_token");
         if (!token) return;
 
         const res = await fetch(`${API_BASE_URL}/vendor/business/${bId}`, {
@@ -140,7 +140,7 @@ export default function VerifyBusinessContent() {
     };
 
     try {
-      const token = localStorage.getItem("authToken");
+      const token = sessionStorage.getItem("vendor_token");
       if (!token) {
         router.replace("/restaurant/login");
         return;
@@ -238,7 +238,7 @@ export default function VerifyBusinessContent() {
         return;
       }
 
-      const token = localStorage.getItem("authToken");
+      const token = sessionStorage.getItem("vendor_token");
       if (!token) {
         setError("Your session has expired. Please log in again.");
         router.push("/restaurant/login");

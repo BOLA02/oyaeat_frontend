@@ -25,13 +25,13 @@ const API = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
 
 function authHeaders(): HeadersInit {
   const token =
-    typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
+    typeof window !== "undefined" ? sessionStorage.getItem("vendor_token") : null;
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
 function getBusinessId(): number | null {
   try {
-    const raw = localStorage.getItem("dashboard");
+    const raw = sessionStorage.getItem("vendor_dashboard");
     if (!raw) return null;
     return JSON.parse(raw)?.businesses?.[0]?.id ?? null;
   } catch {

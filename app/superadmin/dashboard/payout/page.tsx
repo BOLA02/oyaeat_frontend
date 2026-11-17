@@ -21,7 +21,7 @@ export default function SuperAdminPayoutsDashboard() {
   const loadAdminDashboardData = async () => {
     try {
       const token =
-        localStorage.getItem("admin_token");
+        sessionStorage.getItem("admin_token");
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000"}/api/wallet/admin/financial-queue-logs`,
         {
@@ -33,8 +33,8 @@ export default function SuperAdminPayoutsDashboard() {
       );
 
       if (response.status === 401) {
-        localStorage.removeItem("admin_token");
-        localStorage.removeItem("admin_user");
+        sessionStorage.removeItem("admin_token");
+        sessionStorage.removeItem("admin_user");
         window.location.href = "/superadmin/login";
         return;
       }
@@ -52,19 +52,6 @@ export default function SuperAdminPayoutsDashboard() {
   useEffect(() => {
     loadAdminDashboardData();
   }, []);
-
-  const handleSaveBankOnboarding = async (formData: any) => {
-    setSavingOnboarding(true);
-    try {
-      await walletApi.linkBankFromEmail(formData);
-      alert("Success! Banking records bound and synchronized securely.");
-      loadAdminDashboardData();
-    } catch (err: any) {
-      alert(err.message || "Failed to link banking elements");
-    } finally {
-      setSavingOnboarding(false);
-    }
-  };
 
   const handleExecuteSettlement = async (transactionId: string) => {
     try {
@@ -94,7 +81,7 @@ export default function SuperAdminPayoutsDashboard() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-1">
               <AccountOnboarding
-                onSave={handleSaveBankOnboarding}
+                onSave={async () => {}}
                 processing={savingOnboarding}
               />
             </div>

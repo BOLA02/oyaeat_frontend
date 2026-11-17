@@ -8,6 +8,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircle, Mail, Lock, ArrowRight, ShieldCheck } from "lucide-react";
+import { saveRoleSession } from "@/lib/roleSession";
 
 // ── Brand tokens ──────────────────────────────────────────────────────────────
 const C = {
@@ -150,11 +151,11 @@ export default function AdminLoginPage() {
 
       if (data?.token) {
                 // Admin has its own key so it never overwrites a vendor session.
-        localStorage.setItem("admin_token", data.token);
+        saveRoleSession("admin", data.token, data.admin);
       }
 
       if (data?.admin) {
-        localStorage.setItem("admin_user", JSON.stringify(data.admin));
+        sessionStorage.setItem("admin_user", JSON.stringify(data.admin));
       }
 
       router.replace("/superadmin/dashboard");

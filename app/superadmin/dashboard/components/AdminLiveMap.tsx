@@ -36,7 +36,7 @@ export default function AdminLiveMap() {
     const fetchLiveTelemetry = async () => {
       try {
         const token =
-          localStorage.getItem("admin_token");
+          sessionStorage.getItem("admin_token");
 
         // 1. Correct route URL path matching the backend mount
 
