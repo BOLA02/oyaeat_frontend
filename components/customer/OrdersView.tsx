@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { ChevronRight, MapPin, Receipt, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 import { EmptyState, ErrorState, PageHeader, RowSkeleton, StatusPill } from "./ui";
-import { ACTIVE_STATUSES, api, clearPendingPayment, getCustomerId, getPendingPayment, getUser, isAwaitingPayment, naira } from "@/lib/customer";
+import { ACTIVE_STATUSES, api, clearPendingPayment, CUSTOMER_SESSION_EVENT, getCustomerId, getPendingPayment, getUser, naira } from "@/lib/customer";
 import { useCart } from "@/hooks/useCart";
 import { cn } from "@/lib/utils";
 
@@ -19,47 +19,68 @@ const TABS = [
 
 export default function OrdersView() {
   const router = useRouter();
-  const cart = useCart();
+  const { clear, replaceAll } = useCart();
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [tab, setTab] = useState<(typeof TABS)[number]["id"]>("all");
   const [shown, setShown] = useState(8);
+  const mountedRef = useRef(false);
+  const requestRef = useRef<AbortController | null>(null);
 
   const load = useCallback(async () => {
+    requestRef.current?.abort();
+    const controller = new AbortController();
+    requestRef.current = controller;
+    const customerId = getCustomerId(getUser());
     setLoading(true);
     setError("");
     try {
-      let json = await api("/orders/my", { auth: true });
+      let json = await api("/orders/my", { auth: true, signal: controller.signal });
       let list: any[] = json.data?.orders || [];
-      const customerId = getCustomerId(getUser());
       const pending = customerId ? getPendingPayment(customerId) : null;
       if (pending) {
         try {
-          await api(`/orders/verify-payment/${encodeURIComponent(pending.reference)}`, { auth: true });
-          json = await api("/orders/my", { auth: true });
+          await api(`/orders/verify-payment/${encodeURIComponent(pending.reference)}`, { auth: true, signal: controller.signal });
+          json = await api("/orders/my", { auth: true, signal: controller.signal });
           list = json.data?.orders || [];
           const paidOrder = list.find((order) => String(order.id) === pending.orderId && (order.paymentStatus === "paid" || order.isPaid === true));
-          if (paidOrder) {
-            cart.clear();
-            clearPendingPayment(customerId!);
+          if (paidOrder && !controller.signal.aborted && getCustomerId(getUser()) === customerId) {
+            clear();
+            clearPendingPayment(pending.customerId);
             toast.success("Payment confirmed. The restaurant has your order.");
           }
         } catch {
           // Failed, cancelled and unknown outcomes deliberately retain both cart and marker.
         }
       }
+      if (controller.signal.aborted || !mountedRef.current || getCustomerId(getUser()) !== customerId) return;
       setOrders(list);
       if (list.some((o) => ACTIVE_STATUSES.includes(o.status))) setTab("active");
     } catch (e: any) {
+      if (controller.signal.aborted || !mountedRef.current) return;
       setError(e.message);
     } finally {
-      setLoading(false);
+      if (!controller.signal.aborted && mountedRef.current) setLoading(false);
+      if (requestRef.current === controller) requestRef.current = null;
     }
-  }, [cart]);
+  }, [clear]);
 
   useEffect(() => {
+    mountedRef.current = true;
     load();
+    const onSessionChange = () => {
+      setOrders([]);
+      setShown(8);
+      load();
+    };
+    window.addEventListener(CUSTOMER_SESSION_EVENT, onSessionChange);
+    return () => {
+      mountedRef.current = false;
+      requestRef.current?.abort();
+      requestRef.current = null;
+      window.removeEventListener(CUSTOMER_SESSION_EVENT, onSessionChange);
+    };
   }, [load]);
 
   const isActive = (o: any) => ACTIVE_STATUSES.includes(o.status);
@@ -81,7 +102,7 @@ export default function OrdersView() {
       restaurantName: o.business?.name || "Restaurant",
     }));
     if (!items.length) return;
-    cart.replaceAll(items);
+    replaceAll(items);
     router.push("/customer/cart");
   };
 
